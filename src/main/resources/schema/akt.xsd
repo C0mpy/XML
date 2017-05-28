@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="www.tim7.org"
+    targetNamespace="www.tim7.org" elementFormDefault="qualified">
+    <xsd:element name="akt">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="preambula"/>
+                <xsd:choice>
+                    <xsd:sequence maxOccurs="1" minOccurs="1">
+                        <xsd:element ref="deo" maxOccurs="unbounded" minOccurs="2"/>
+                    </xsd:sequence>
+                    <xsd:sequence maxOccurs="1" minOccurs="1">
+                        <xsd:element ref="clan" maxOccurs="20" minOccurs="2"/>
+                    </xsd:sequence>
+                    <xsd:sequence maxOccurs="1">
+                        <xsd:element ref="glava" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                </xsd:choice>
+            </xsd:sequence>
+            <xsd:attribute name="naslov" type="xsd:string" use="required"/>
+            <xsd:attribute name="status" type="status" use="required"/>
+            <xsd:attribute name="drzava" type="xsd:string"/>
+            <xsd:attribute name="pokrajina" type="xsd:string"/>
+            <xsd:attribute name="grad" type="xsd:string"/>
+            <xsd:attribute name="donosilac" type="xsd:string"/>
+            <xsd:attribute name="broj" type="xsd:string"/>
+            <xsd:attribute name="datum" type="xsd:string"/>
+            <xsd:attribute name="gradonacelnik" type="xsd:string"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="preambula"/>
+    <xsd:element name="deo">
+        <xsd:complexType>
+            <xsd:sequence maxOccurs="unbounded" minOccurs="2">
+                <xsd:element ref="glava"/>
+            </xsd:sequence>
+            <xsd:attribute name="broj" type="xsd:string" use="required"/>
+            <xsd:attribute name="naziv">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:pattern value="[A-Z]*"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="glava">
+        <xsd:complexType>
+            <xsd:choice maxOccurs="1">
+                <xsd:sequence maxOccurs="1" minOccurs="1">
+                    <xsd:element ref="odeljak" maxOccurs="unbounded"/>
+                </xsd:sequence>
+                <xsd:sequence>
+                    <xsd:element maxOccurs="unbounded" ref="clan"/>
+                </xsd:sequence>
+                <xsd:sequence>
+                    <xsd:element maxOccurs="unbounded" ref="sadrzaj"/>
+                </xsd:sequence>
+            </xsd:choice>
+            <xsd:attribute name="broj" use="required">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:pattern value="[MDCLXVI]+"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:attribute>
+            <xsd:attribute name="naziv" type="xsd:string" use="required"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="odeljak">
+        <xsd:complexType>
+            <xsd:choice>
+                <xsd:sequence>
+                    <xsd:element maxOccurs="unbounded" ref="pododeljak"/>
+                </xsd:sequence>
+                <xsd:sequence>
+                    <xsd:element maxOccurs="unbounded" ref="clan"/>
+                </xsd:sequence>
+            </xsd:choice>
+            <xsd:attribute name="broj" type="xsd:int" use="required"/>
+            <xsd:attribute name="naziv" type="xsd:string" use="required"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="pododeljak">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="clan"/>
+            </xsd:sequence>
+            <xsd:attribute name="naziv" type="xsd:string" use="required"/>
+            <xsd:attribute form="unqualified" name="oznaka" type="xsd:string" use="required"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="clan">
+        <xsd:complexType>
+            <xsd:choice>
+                <xsd:sequence maxOccurs="unbounded" minOccurs="1">
+                    <xsd:element ref="stav"/>
+                </xsd:sequence>
+            </xsd:choice>
+            <xsd:attribute name="naziv" type="xsd:string" use="optional"/>
+            <xsd:attribute name="broj" type="xsd:int" use="required"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="stav">
+        <xsd:complexType>
+            <xsd:choice>
+                <xsd:sequence maxOccurs="unbounded" minOccurs="1">
+                    <xsd:element ref="tacka"/>
+                </xsd:sequence>
+                <xsd:element ref="sadrzaj"/>
+            </xsd:choice>
+            <xsd:attribute name="id" type="xsd:string"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="tacka">
+        <xsd:complexType>
+            <xsd:choice>
+                <xsd:sequence maxOccurs="unbounded" minOccurs="2">
+                    <xsd:element ref="podtacka"/>
+                </xsd:sequence>
+                <xsd:element ref="sadrzaj"/>
+            </xsd:choice>
+            <xsd:attribute name="broj" type="xsd:int"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="podtacka">
+        <xsd:complexType>
+            <xsd:choice>
+                <xsd:sequence maxOccurs="1">
+                    <xsd:element maxOccurs="unbounded" minOccurs="2" ref="alineja"/>
+                </xsd:sequence>
+                <xsd:element maxOccurs="1" ref="sadrzaj"/>
+            </xsd:choice>
+            <xsd:attribute name="broj" type="xsd:int"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="alineja">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="sadrzaj"/>
+            </xsd:sequence>
+            <xsd:attribute name="id" type="xsd:string"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="sadrzaj" type="xsd:string"/>
+    <xsd:simpleType name="status">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="((U NACELU)|(U PROCEDURI)|(U CELOSTI)|(USVOJEN))"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+</xsd:schema>
