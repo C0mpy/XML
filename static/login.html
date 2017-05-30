@@ -1,0 +1,25 @@
+<div class="btn-group" data-toggle="buttons">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <h3>alderman login:</h3>
+                <form name="loginForm">
+                    <div class="form-group">
+                        <label for="username">username:</label>
+                        <input type="text" class="form-control" id="username" ng-model="loginCtrl.username">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">pass:</label>
+                        <input type="password" class="form-control" id="password" ng-model="loginCtrl.password">
+                    </div>
+                    <button class="btn btn-success" ng-disabled="loginForm.$invalid" ng-click="loginCtrl.login()">Submit</button>
+                </form>
+                <a href="">or continue as a citizen</a>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+    </div>
+
+</div>

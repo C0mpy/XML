@@ -1,0 +1,23 @@
+{
+  "name": "static",
+  "homepage": "https://github.com/C0mpy/XML",
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-bootstrap": "^2.5.0",
+    "angular-lodash-module": "^1.2.0",
+    "angular-resource": "^1.6.4",
+    "angular-route": "1.6.4",
+    "angular": "angularjs#^1.6.4",
+    "bootstrap": "^3.3.7",
+    "restangular": "^1.6.1"
+  }
+}

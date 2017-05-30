@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<korisnik xmlns="www.tim7.org/korisnik">
+    <username>pred</username>
+    <password>pred</password>
+    <ime>Igor</ime>
+    <prezime>Mirovic</prezime>
+    <uloga>PREDSEDNIK</uloga>
+</korisnik>

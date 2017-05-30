@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:korisnik="www.tim7.org/korisnik"
+            elementFormDefault="qualified"
+            targetNamespace="www.tim7.org/korisnik">
+
+    <xsd:element name="korisnik">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="username" type="xsd:token"/>
+                <xsd:element name="password" type="xsd:token"/>
+                <xsd:element name="ime" type="xsd:string"/>
+                <xsd:element name="prezime" type="xsd:string"/>
+                <xsd:element name="uloga" type="korisnik:uloga"/>
+            </xsd:sequence>
+            <xsd:attribute name="id" type="xsd:ID"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:simpleType name="uloga">
+        <xsd:restriction base="xsd:token">
+            <xsd:enumeration value="PREDSEDNIK"/>
+            <xsd:enumeration value="ODBORNIK"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+</xsd:schema>
