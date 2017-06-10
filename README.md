@@ -12,3 +12,7 @@ napomena:
 - nakon svakog menjanja xsd schema, klase iz modela se moraju obrisati i izgenerisati iznova iz promenjenih schema:
   - pozicionirati se u /XML/src/main/resources/schema
   - pozvati: xjc -d ../../java/ -p [imepaketa] [imescheme.xsd]    ovom komandom kazemo da se klase izgenerisu u direktorijumu ../../java/ u paketu [imepaketa] iz scheme [imescheme.xsd]
+  - primeri:
+    - sudo xjc -d ../../java/model/ -p amandman amandman.xsd
+    - sudo xjc -d ../../java/model/ -p korisnik korisnik.xsd
+    - sudo xjc -d ../../java/model/ -p akt akt.xsd
