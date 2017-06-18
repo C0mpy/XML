@@ -1,9 +1,11 @@
 package components.service;
 
-import model.Korisnik;
+import components.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import components.repository.UserRepository;
+import model.Korisnik;
+
+import javax.xml.bind.JAXBException;
 
 @Service
 public class UserService {
@@ -13,5 +15,9 @@ public class UserService {
 
     public void register(Korisnik korisnik) {
         repository.register(korisnik);
+    }
+
+    public Korisnik findOneByUsernameAndPassword(String username, String password) throws JAXBException {
+        return repository.findOneByUsernameAndPassword(username, password);
     }
 }

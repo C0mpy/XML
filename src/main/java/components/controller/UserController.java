@@ -1,5 +1,6 @@
 package components.controller;
 
+import components.service.UserService;
 import dto.LoginDTO;
 import dto.ResponseDTO;
 import dto.UserDTO;
@@ -12,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import components.service.UserService;
+
+import javax.xml.bind.JAXBException;
 import java.util.UUID;
 
 @RestController
@@ -28,12 +30,14 @@ public class  UserController {
             consumes = "application/json",
             produces = "application/json"
     )
-    ResponseEntity <ResponseDTO> login(@RequestBody LoginDTO loginDTO) {
-
-        System.out.println("istorijski uspeh");
-        System.out.println(loginDTO.getUsername());
-        //Korisnik u = userService.findOneByUsernameAndPassword(loginDTO.getUsername(), loginDTO.getPassword());
-        return new ResponseEntity<ResponseDTO>(new ResponseDTO("is oke"), HttpStatus.OK);
+    ResponseEntity login(@RequestBody LoginDTO loginDTO) throws JAXBException {
+        Korisnik u = userService.findOneByUsernameAndPassword(loginDTO.getUsername(), loginDTO.getPassword());
+        if(u == null) {
+            return new ResponseEntity("Bad username & password!", HttpStatus.BAD_REQUEST);
+        }
+        else {
+            return new ResponseEntity(u, HttpStatus.OK);
+        }
     }
 
     @RequestMapping(
@@ -56,6 +60,8 @@ public class  UserController {
 
         return new ResponseEntity<ResponseDTO>(new ResponseDTO("is ok"), HttpStatus.OK);
     }
+
+
 
 
 }

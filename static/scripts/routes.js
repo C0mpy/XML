@@ -7,6 +7,21 @@ angular
                 controller: "loginController",
                 controllerAs: "loginCtrl"
             })
+            .when("/alderman", {
+                templateUrl: "../alderman.html",
+                controller: "aldermanController",
+                controllerAs: "aldermanCtrl"
+            })
+            .when("/president", {
+                templateUrl: "../president.html",
+                controller: "presidentController",
+                controllerAs: "presidentCtrl"
+            })
+            .when("/citizen", {
+                templateUrl: "../citizen.html",
+                controller: "citizenController",
+                controllerAs: "citizenCtrl"
+            })
             .otherwise({
                 redirectTo: "/"
             });

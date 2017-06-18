@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:am="www.tim7.org/amandman"
+           xmlns:a="www.tim7.org/akt"
+           elementFormDefault="qualified"
+           targetNamespace="www.tim7.org/amandman">
+
+    <xs:import namespace="www.tim7.org/akt" schemaLocation="akt.xsd"/>
+    <xs:element name="amandman">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="a:preambula"/>
+                <xs:element maxOccurs="unbounded" ref="a:clan"/>
+            </xs:sequence>
+            <xs:attribute name="naslov" type="xs:string" use="required"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
