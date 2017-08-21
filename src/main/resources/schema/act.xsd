@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:act="www.assembly.gov.rs/acts"
+    targetNamespace="www.assembly.gov.rs/acts" elementFormDefault="qualified">
+
+    <xs:element name="act">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="act:preamble"/>
+                <xs:choice>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="2" ref="act:part"/>
+                    </xs:sequence>
+                    <xs:sequence>
+                        <xs:element maxOccurs="20" minOccurs="2" ref="act:article"/>
+                    </xs:sequence>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" ref="act:chapter"/>
+                    </xs:sequence>
+                </xs:choice>
+            </xs:sequence>
+            <xs:attribute ref="act:id"/>
+            <xs:attribute name="authorId" type="xs:short"/>
+            <xs:attribute ref="act:title"/>
+            <xs:attribute name="status" type="act:status"/>
+            <xs:attribute name="country" type="xs:string"/>
+            <xs:attribute name="state" type="xs:string"/>
+            <xs:attribute name="city" type="xs:string"/>
+            <xs:attribute name="broughtBy" type="xs:string"/>
+            <xs:attribute name="issueNumber" type="xs:string"/>
+            <xs:attribute name="date" type="xs:string"/>
+            <xs:attribute name="mayor" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="preamble" type="xs:string"/>
+    <xs:element name="part">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="2" ref="act:chapter"/>
+            </xs:sequence>
+            <xs:attribute name="number" type="xs:string"/>
+            <xs:attribute ref="act:title"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="chapter">
+        <xs:complexType>
+            <xs:choice>
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" ref="act:section"/>
+                </xs:sequence>
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" ref="act:article"/>
+                </xs:sequence>
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" ref="act:content"/>
+                </xs:sequence>
+            </xs:choice>
+            <xs:attribute name="number" type="xs:string"/>
+            <xs:attribute ref="act:title"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="section">
+        <xs:complexType>
+            <xs:choice>
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" ref="act:subsection"/>
+                    <xs:element ref="act:article" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:choice>
+            <xs:attribute ref="act:number"/>
+            <xs:attribute ref="act:title"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="subsection">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="act:article"/>
+            </xs:sequence>
+            <xs:attribute ref="act:title"/>
+            <xs:attribute name="mark" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="article">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="act:paragraph"/>
+            </xs:sequence>
+            <xs:attribute ref="act:id"/>
+            <xs:attribute ref="act:title"/>
+            <xs:attribute ref="act:number"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="paragraph">
+        <xs:complexType>
+            <xs:choice>
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" ref="act:clause"/>
+                </xs:sequence>
+                <xs:element ref="act:content"/>
+            </xs:choice>
+            <xs:attribute ref="act:id"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="clause">
+        <xs:complexType>
+            <xs:choice>
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="2" ref="act:subclause"/>
+                </xs:sequence>
+                <xs:element ref="act:content"/>
+            </xs:choice>
+            <xs:attribute ref="act:id"/>
+            <xs:attribute ref="act:number"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="subclause">
+        <xs:complexType>
+            <xs:choice>
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="2" ref="act:indent"/>
+                </xs:sequence>
+                <xs:element ref="act:content"/>
+            </xs:choice>
+            <xs:attribute ref="act:id"/>
+            <xs:attribute ref="act:number"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="indent">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="act:content"/>
+            </xs:sequence>
+            <xs:attribute ref="act:id"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:attribute name="id" type="xs:string"/>
+    <xs:attribute name="number" type="xs:int"/>
+    <xs:attribute name="title" type="xs:string"/>
+    <xs:element name="content" type="xs:string"/>
+    <xs:simpleType name="status">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="ACCEPTED"/>
+            <xs:enumeration value="PENDING"/>
+            <xs:enumeration value="REJECTED"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

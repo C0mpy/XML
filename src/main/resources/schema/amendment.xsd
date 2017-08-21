@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="www.assembly.gov.rs/acts"
+    targetNamespace="www.assembly.gov.rs/acts" elementFormDefault="qualified">
+
+    <xs:include id="act" schemaLocation="../../../../../act.xsd"/>
+    <xs:element name="amendment">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="target"/>
+                <xs:element ref="content"/>
+            </xs:sequence>
+            <xs:attribute ref="id"/>
+            <xs:attribute name="actId"/>
+            <xs:attribute name="date"/>
+            <xs:attribute name="status" type="status"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="target">
+        <xs:complexType>
+            <xs:choice>
+                <xs:element ref="article"/>
+                <xs:element ref="paragraph"/>
+                <xs:element ref="clause"/>
+                <xs:element ref="subclause"/>
+                <xs:element ref="indent"/>
+            </xs:choice>
+            <xs:attribute name="targetId"/>
+            <xs:attribute name="position" type="position" form="unqualified"/>
+            <xs:attribute name="operation" type="operation"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:simpleType name="position">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="BEFORE"/>
+            <xs:enumeration value="AFTER"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="operation">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="INSERT"/>
+            <xs:enumeration value="UPDATE"/>
+            <xs:enumeration value="DELETE"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>
