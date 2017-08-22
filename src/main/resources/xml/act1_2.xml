@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE akt>
-<a:akt xmlns:a="www.tim7.org/akt"
+<!DOCTYPE act>
+<a:act xmlns:a="www.assembly.gov.rs/acts"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="www.tim7.org ../schema/akt.xsd"
-       naslov="ПРАВИЛНИК О УСЛОВИМА, НАЧИНУ КОРИШЋЕЊА И ПОТРОШЊИ ГОРИВА СЛУЖБЕНИХ ВОЗИЛА СЛУЖБЕ ЗА ЗАЈЕДНИЧКЕ ПОСЛОВЕ"
-       status="USVOJEN" drzava="РЕПУБЛИКА СРБИЈА" pokrajina="АУТОНОМНА ПОКРАЈИНА ВОЈВОДИНА" grad="ГРАД НОВИ САД"
-       donosilac="ГРАДОНАЧЕЛНИК ГРАДА НОВОГ САДА" broj="031-1/2015-360-II" datum="22. децембар 2015. године"
-       gradonacelnik="Милош Вучевић, с.р.">
+       xsi:schemaLocation="www.assembly.gov.rs/acts ../schema/act.xsd"
+       a:title="ПРАВИЛНИК О УСЛОВИМА, НАЧИНУ КОРИШЋЕЊА И ПОТРОШЊИ ГОРИВА СЛУЖБЕНИХ ВОЗИЛА СЛУЖБЕ ЗА ЗАЈЕДНИЧКЕ ПОСЛОВЕ"
+       status="ACCEPTED" country="РЕПУБЛИКА СРБИЈА" state="АУТОНОМНА ПОКРАЈИНА ВОЈВОДИНА" city="ГРАД НОВИ САД"
+       broughtBy="ГРАДОНАЧЕЛНИК ГРАДА НОВОГ САДА" issueNumber="031-1/2015-360-II" date="22. децембар 2015. године"
+       mayor="Милош Вучевић, с.р.">
     
-    <a:preambula>
+    <a:preamble>
         На основу члана 16. став 2. Статута Града Новог Сада
         - пречишћен текст ("Службени лист Града Новог Сада",
         број 43/08), Градоначелник Града Новог Сада доноси
-    </a:preambula>
-    <a:clan broj="1">
-       <a:stav>
-           <a:sadrzaj>
+    </a:preamble>
+    <a:article a:number="1">
+       <a:paragraph>
+           <a:content>
                Овим правилником уређују се услови, начин коришћења
                и потрошња горива службених возила (у даљем тексту:
                возила), према типу и техничким карактеристикама возила
@@ -27,99 +27,99 @@
                начин обрачуна потрошње горива, права и обавезе запо-
                слених у вези са коришћењем горива, као и друга питања
                од значаја за потрошњу горива.
-           </a:sadrzaj>
-       </a:stav>
-    </a:clan>
-    <a:clan broj="2">
-        <a:stav>
-            <a:sadrzaj>
+           </a:content>
+       </a:paragraph>
+    </a:article>
+    <a:article a:number="2">
+        <a:paragraph>
+            <a:content>
                 Под горивом, у смислу овог правилника, сматрају се
                 органска фосилна горива и нафтни деривати, који се кори-
                 сте за погон мотора са унутрашњим сагоревањем.
-            </a:sadrzaj>
-        </a:stav>
-    </a:clan>
-    <a:clan broj="3">
-        <a:stav>
-            <a:sadrzaj>
+            </a:content>
+        </a:paragraph>
+    </a:article>
+    <a:article a:number="3">
+        <a:paragraph>
+            <a:content>
                 Возила, у смислу овог правилника, су путничка и друга
                 моторна возила, која су у власништву Службе.
-            </a:sadrzaj>
-        </a:stav>
-    </a:clan>
-    <a:clan broj="4">
-        <a:stav>
-            <a:sadrzaj>
+            </a:content>
+        </a:paragraph>
+    </a:article>
+    <a:article a:number="4">
+        <a:paragraph>
+            <a:content>
                 Запослени овлашћени да управљају возилом, у смислу
                 овог правилника, су лица која су у радном односу у Служби,
                 на неодређено или одређено време, а који су решењем
                 распоређени на радна места возача-професионални возач
                 или друга лица запослена у органима Града, за обављање
                 редовних делатности ( у даљем тексту: возач).
-            </a:sadrzaj>
-        </a:stav>
-    </a:clan>
-    <a:clan broj="5">
-        <a:stav>
-            <a:sadrzaj>
+            </a:content>
+        </a:paragraph>
+    </a:article>
+    <a:article a:number="5">
+        <a:paragraph>
+            <a:content>
                 Врста и количина горива која се набавља за возила за
                 потребе органа Града одређена је финансијским планом
                 Службе, за сваку календарску годину.
-            </a:sadrzaj>
-        </a:stav>
-    </a:clan>
-    <a:clan broj="6">
-        <a:stav>
-            <a:sadrzaj>
+            </a:content>
+        </a:paragraph>
+    </a:article>
+    <a:article a:number="6">
+        <a:paragraph>
+            <a:content>
                 Гориво се може набављати само код добављача који
                 је изабран у поступку јавне набавке и коме је додељен уго-
                 вор о снабдевању горивом, за текућу годину.
-            </a:sadrzaj>
-        </a:stav>
-    </a:clan>
-    <a:clan broj="7">
-        <a:stav>
-            <a:sadrzaj>
+            </a:content>
+        </a:paragraph>
+    </a:article>
+    <a:article a:number="7">
+        <a:paragraph>
+            <a:content>
                 Право на точење горива има возач који има путни налог
                 за управљање возилом.
-            </a:sadrzaj>
-        </a:stav>
-    </a:clan>
-    <a:clan broj="8">
-        <a:stav>
-            <a:sadrzaj>
+            </a:content>
+        </a:paragraph>
+    </a:article>
+    <a:article a:number="8">
+        <a:paragraph>
+            <a:content>
                 За свако путовање, возачу се издаје путни налог за
                 управљање тим возилом, у складу са прописима.
-            </a:sadrzaj>
-        </a:stav>
-        <a:stav>
-            <a:sadrzaj>
+            </a:content>
+        </a:paragraph>
+        <a:paragraph>
+            <a:content>
                 Возач је дужан да за купљено гориво обавезно узме
                 фискални рачун, који је саставни део путног налога.
-            </a:sadrzaj>
-        </a:stav>
-    </a:clan>
-    <a:clan broj="9">
-        <a:stav>
-            <a:sadrzaj>
+            </a:content>
+        </a:paragraph>
+    </a:article>
+    <a:article a:number="9">
+        <a:paragraph>
+            <a:content>
                 За купљено гориво у земљи, плаћање се врши искључиво
                 дебитном електронском картицом, а у иностранству гото-
                 вим новцем.
-            </a:sadrzaj>
-        </a:stav>
-        <a:stav>
-            <a:sadrzaj>
+            </a:content>
+        </a:paragraph>
+        <a:paragraph>
+            <a:content>
                 Возач је дужан да фискални рачун за купљено гориво
                 преда исти дан или први наредни радни дан, шефу Одсека
                 аутосервиса ( у даљем тексту: шеф Одсека).
-            </a:sadrzaj>
-        </a:stav>
-        <a:stav>
-            <a:sadrzaj>
+            </a:content>
+        </a:paragraph>
+        <a:paragraph>
+            <a:content>
                 Уколико се возач налази на службеном путовању дужан
                 је да фискални рачун за купљено гориво преда истог или
                 наредног дана, по повратку са службеног путовања.
-            </a:sadrzaj>
-        </a:stav>
-    </a:clan>
-</a:akt>
+            </a:content>
+        </a:paragraph>
+    </a:article>
+</a:act>
