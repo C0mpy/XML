@@ -1,17 +1,18 @@
-<div layout="column" layout-padding ng-cloak>
-
-  <br/>
-  <md-content class="md-no-momentum">
-
+<br><br><br><br>
+<div layout="row">
+  <div flex="25"></div>
+  <md-content flex="50" class="md-no-momentum" style="overflow: hidden;">
+	<h2>Parlament Novi Sad</h2><br><br>
     <md-input-container class="md-block">
-      <md-icon md-svg-src="../icons/person.svg" class="name"></md-icon>
       <input ng-model="user.email" type="email" placeholder="Email (required)" ng-required="true">
     </md-input-container>
     
     <md-input-container class="md-block">
       <input ng-model="user.password" type="text" placeholder="Password" ng-required="true">
     </md-input-container>
-
+	
+	<md-button class="md-raised">Login</md-button>
   </md-content>
-
+  <div flex="25"></div>
 </div>
+
