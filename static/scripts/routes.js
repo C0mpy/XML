@@ -1,5 +1,5 @@
 angular
-    .module("myApp", ['ngResource', 'ngRoute', 'restangular', 'lodash', 'ngMaterial', 'ngMessages', 'ngMdIcons'])
+    .module("myApp", ['ngResource', 'ngRoute', 'restangular', 'lodash', 'ngMaterial', 'ngMessages', 'ngMdIcons', 'ngStorage'])
     .config(["$routeProvider", function($routeProvider) {
         $routeProvider
             .when("/", {

@@ -11,13 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 import app.dto.LoginDTO;
 import app.dto.ResponseDTO;
 import app.dto.UserDTO;
+import app.model.User;
 import app.service.UserService;
 
-import javax.xml.bind.JAXBException;
-import java.util.UUID;
-
 @RestController
-@RequestMapping(value = "/users")
+@RequestMapping(value = "/user")
 public class  UserController {
 
     @Autowired
@@ -29,8 +27,13 @@ public class  UserController {
             consumes = "application/json",
             produces = "application/json"
     )
-    ResponseEntity login(@RequestBody LoginDTO loginDTO) throws JAXBException {
-    	return new ResponseEntity(null, HttpStatus.OK);
+    public ResponseEntity login(@RequestBody LoginDTO loginDTO) {
+    	
+    	User user = userService.login(loginDTO);
+    	if(user != null)
+    		return new ResponseEntity(user, HttpStatus.OK);
+    	else
+    		return new ResponseEntity(HttpStatus.NOT_FOUND);
         
     }
 
@@ -40,7 +43,7 @@ public class  UserController {
             consumes = "application/json",
             produces = "application/json"
     )
-    ResponseEntity <ResponseDTO> register(@RequestBody UserDTO userDTO) {
+    public ResponseEntity <ResponseDTO> register(@RequestBody UserDTO userDTO) {
 
         return new ResponseEntity<ResponseDTO>(new ResponseDTO("is ok"), HttpStatus.OK);
     }

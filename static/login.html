@@ -4,14 +4,14 @@
   <md-content flex="50" class="md-no-momentum" style="overflow: hidden;">
 	<h2>Parlament Novi Sad</h2><br><br>
     <md-input-container class="md-block">
-      <input ng-model="user.email" type="email" placeholder="Email (required)" ng-required="true">
+      <input ng-model="loginCtrl.username" type="text" placeholder="Username (required)" ng-required="true">
     </md-input-container>
     
     <md-input-container class="md-block">
-      <input ng-model="user.password" type="text" placeholder="Password" ng-required="true">
+      <input ng-model="loginCtrl.password" type="password" placeholder="Password" ng-required="true">
     </md-input-container>
 	
-	<md-button class="md-raised">Login</md-button>
+	<md-button ng-click="loginCtrl.login()" class="md-raised">Login</md-button>
   </md-content>
   <div flex="25"></div>
 </div>
