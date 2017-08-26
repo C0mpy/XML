@@ -5,7 +5,7 @@
     <xs:element name="act">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="act:preamble"/>
+                <xs:element name="preamble" type="xs:string"/>
                 <xs:choice>
                     <xs:sequence>
                         <xs:element maxOccurs="unbounded" minOccurs="2" ref="act:part"/>
@@ -31,12 +31,12 @@
             <xs:attribute name="mayor" type="xs:string"/>
         </xs:complexType>
     </xs:element>
-    <xs:element name="preamble" type="xs:string"/>
     <xs:element name="part">
         <xs:complexType>
             <xs:sequence>
                 <xs:element maxOccurs="unbounded" minOccurs="2" ref="act:chapter"/>
             </xs:sequence>
+            <xs:attribute ref="act:id"/>
             <xs:attribute name="number" type="xs:string"/>
             <xs:attribute ref="act:title"/>
         </xs:complexType>
@@ -54,6 +54,7 @@
                     <xs:element maxOccurs="unbounded" ref="act:content"/>
                 </xs:sequence>
             </xs:choice>
+            <xs:attribute ref="act:id"/>
             <xs:attribute name="number" type="xs:string"/>
             <xs:attribute ref="act:title"/>
         </xs:complexType>
@@ -66,6 +67,7 @@
                     <xs:element ref="act:article" maxOccurs="unbounded"/>
                 </xs:sequence>
             </xs:choice>
+            <xs:attribute ref="act:id"/>
             <xs:attribute ref="act:number"/>
             <xs:attribute ref="act:title"/>
         </xs:complexType>
@@ -73,8 +75,9 @@
     <xs:element name="subsection">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="act:article"/>
+                <xs:element ref="act:article" maxOccurs="unbounded"/>
             </xs:sequence>
+            <xs:attribute ref="act:id"/>
             <xs:attribute ref="act:title"/>
             <xs:attribute name="mark" type="xs:string"/>
         </xs:complexType>

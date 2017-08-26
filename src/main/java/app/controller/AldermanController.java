@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import app.dto.ActDTO;
 import app.dto.RequestDTO;
 import app.model.Session;
 import app.service.AldermanService;
@@ -42,6 +43,16 @@ public class AldermanController {
 		Session session = aldermanService.getSession(requestDTO.getRequest());
 		return ResponseEntity.status(HttpStatus.OK).body(session);
 		
+	}
+	
+	@RequestMapping(
+            value = "/addAct",
+            method = RequestMethod.POST,
+            consumes = "application/json",
+            produces = "application/json"
+    )
+	public void addAct(@RequestBody ActDTO actDTO) {
+		System.out.println(actDTO);
 	}
 
 }

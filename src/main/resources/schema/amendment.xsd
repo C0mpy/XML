@@ -5,13 +5,12 @@
     <xs:include id="act" schemaLocation="../../../../../act.xsd"/>
     <xs:element name="amendment">
         <xs:complexType>
-            <xs:sequence>
+            <xs:sequence maxOccurs="unbounded">
                 <xs:element ref="target"/>
                 <xs:element ref="content"/>
             </xs:sequence>
             <xs:attribute ref="id"/>
             <xs:attribute name="actId"/>
-            <xs:attribute name="date"/>
             <xs:attribute name="status" type="status"/>
         </xs:complexType>
     </xs:element>
