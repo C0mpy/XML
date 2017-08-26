@@ -7,7 +7,7 @@
         vm.login = login;
 
         function login() {
-            $http.post("/user/login", {"username" : vm.username, "password" : vm.password}).then(
+            $http.post("api/user/login", {"username" : vm.username, "password" : vm.password}).then(
             function(response) {
             	$sessionStorage.user = response.data;
             	if(response.data.type == "President")

@@ -17,7 +17,7 @@ import app.model.User;
 import app.service.UserService;
 
 @RestController
-@RequestMapping(value = "/user")
+@RequestMapping(value = "api/user")
 public class  UserController {
 
     @Autowired
