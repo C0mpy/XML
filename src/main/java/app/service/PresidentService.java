@@ -26,5 +26,11 @@ public class PresidentService {
 		sessionRepository.save(session);
 	}
 	
+	public void endSession(String sessionId) {
+		Session session = sessionRepository.findOne(Long.parseLong(sessionId));
+		session.setState("ENDED");
+		sessionRepository.save(session);
+	}
+	
 
 }

@@ -29,10 +29,10 @@ public class PresidentController {
 		if(DateFormat.isValid(requestDTO.getRequest())) {
 			Session session = new Session(requestDTO.getRequest());
 			presidentService.addSession(session);
-			return new ResponseEntity("Session scheldued", HttpStatus.OK);
+			return ResponseEntity.status(HttpStatus.OK).body("Session scheldued");
 		}
 		else {
-			return new ResponseEntity("Bad Parameter", HttpStatus.BAD_REQUEST);
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Parameter");
 		}
         
     }
@@ -45,7 +45,18 @@ public class PresidentController {
     )
     public ResponseEntity startSession(@RequestBody RequestDTO requestDTO) {
 		presidentService.startSession(requestDTO.getRequest());
-		return new ResponseEntity("Session started", HttpStatus.OK);
+		return ResponseEntity.status(HttpStatus.OK).body("Session started");
+    }
+	
+	@RequestMapping(
+            value = "/endSession",
+            method = RequestMethod.POST,
+            consumes = "application/json",
+            produces = "application/json"
+    )
+    public ResponseEntity endSession(@RequestBody RequestDTO requestDTO) {
+		presidentService.endSession(requestDTO.getRequest());
+		return ResponseEntity.status(HttpStatus.OK).body("Session ended");
     }
 
 }

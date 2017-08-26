@@ -25,10 +25,10 @@ public class AldermanController {
             value = "/getSessions",
             method = RequestMethod.GET
     )
-    public ResponseEntity getSessions() {
+    public ResponseEntity<?> getSessions() {
 		
 		ArrayList<Session> sessions = aldermanService.getAllSessions();
-		return new ResponseEntity(sessions, HttpStatus.OK);
+		return ResponseEntity.status(HttpStatus.OK).body(sessions);
         
     }
 	
@@ -39,9 +39,9 @@ public class AldermanController {
             produces = "application/json"
     )
 	public ResponseEntity getSession(@RequestBody RequestDTO requestDTO) {
-		System.out.println(requestDTO.getRequest());
 		Session session = aldermanService.getSession(requestDTO.getRequest());
-		return new ResponseEntity(session, HttpStatus.OK);
+		return ResponseEntity.status(HttpStatus.OK).body(session);
+		
 	}
 
 }

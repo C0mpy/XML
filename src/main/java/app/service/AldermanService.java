@@ -19,7 +19,6 @@ public class AldermanService {
 	}
 
 	public Session getSession(String sessionId) {
-		System.out.println(sessionId);
 		return sessionRepository.findOne(Long.parseLong(sessionId));
 	}
 
