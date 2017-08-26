@@ -1,5 +1,7 @@
 package app.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,9 +31,10 @@ public class  UserController {
     )
     public ResponseEntity login(@RequestBody LoginDTO loginDTO) {
     	
-    	User user = userService.login(loginDTO);
-    	if(user != null)
-    		return new ResponseEntity(user, HttpStatus.OK);
+    	Map<String, Object> result = userService.login(loginDTO);
+    	System.out.println(result);
+    	if(result != null)
+    		return new ResponseEntity(result, HttpStatus.OK);
     	else
     		return new ResponseEntity(HttpStatus.NOT_FOUND);
         

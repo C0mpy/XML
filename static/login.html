@@ -1,18 +1,15 @@
-<br><br><br><br>
-<div layout="row">
-  <div flex="25"></div>
-  <md-content flex="50" class="md-no-momentum" style="overflow: hidden;">
-	<h2>Parlament Novi Sad</h2><br><br>
-    <md-input-container class="md-block">
-      <input ng-model="loginCtrl.username" type="text" placeholder="Username (required)" ng-required="true">
-    </md-input-container>
-    
-    <md-input-container class="md-block">
-      <input ng-model="loginCtrl.password" type="password" placeholder="Password" ng-required="true">
-    </md-input-container>
-	
-	<md-button ng-click="loginCtrl.login()" class="md-raised">Login</md-button>
-  </md-content>
-  <div flex="25"></div>
+<br><br><br>
+<div class = "container">
+	<div class="wrapper">
+		<form name="Login_Form" class="form-signin">       
+		    <h3 class="form-signin-heading">Welcome to Parlament!</h3>
+		    <h4> Please Sign In</h4>
+			<hr class="colorgraph"><br>
+			  
+			<input ng-model="loginCtrl.username" type="text" class="form-control" name="Username" placeholder="Username" required="true" autofocus="true" />
+			<input ng-model="loginCtrl.password" type="password" class="form-control" name="Password" placeholder="Password" required="true"/>     		  
+			 
+			<button ng-click="loginCtrl.login()" class="btn btn-lg btn-primary btn-block"  name="Submit" value="Login">Login</button>  			
+		</form>			
+	</div>
 </div>
-

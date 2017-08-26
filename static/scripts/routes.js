@@ -1,11 +1,12 @@
 angular
-    .module("myApp", ['ngResource', 'ngRoute', 'restangular', 'lodash', 'ngMaterial', 'ngMessages', 'ngMdIcons', 'ngStorage'])
+    .module("myApp", ['ngResource', 'ngRoute', 'restangular', 'lodash', 'ngMessages', 'ngStorage', 'angularCSS'])
     .config(["$routeProvider", function($routeProvider) {
         $routeProvider
             .when("/", {
                 templateUrl: "../login.html",
                 controller: "loginController",
-                controllerAs: "loginCtrl"
+                controllerAs: "loginCtrl",
+                css: "../styles/login.css"
             })
             .when("/alderman", {
                 templateUrl: "../alderman.html",
