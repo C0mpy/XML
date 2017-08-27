@@ -5,12 +5,12 @@ import com.marklogic.client.DatabaseClientFactory;
 public class MarklogicProperties {
 	
 	// common data for both marklogic and mysql database
-    public static String user = "root";
-    public static String password = "root";
-    public static String host = "localhost";
-    public static String database = "xml";
-    public static int marklogicPort = 8000;
-	public static DatabaseClientFactory.Authentication auth = DatabaseClientFactory.Authentication.DIGEST;
-    public static boolean proxy = false;
+    public static String USER = "root";
+    public static String PASS = "root";
+    public static String HOST = "localhost";
+    public static String DATABASE = "xml";
+    public static int PORT = 8000;
+	public static DatabaseClientFactory.Authentication AUTH = DatabaseClientFactory.Authentication.DIGEST;
+    public static boolean PROXY = false;
     
 }

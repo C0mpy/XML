@@ -1,14 +1,21 @@
 package app.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.ws.rs.core.MediaType;
+import javax.xml.bind.JAXBException;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.xml.sax.SAXException;
 
 import app.dto.ActDTO;
 import app.dto.RequestDTO;
@@ -46,13 +53,13 @@ public class AldermanController {
 	}
 	
 	@RequestMapping(
-            value = "/addAct",
+            value = "/session/{sessionId}/addAct",
             method = RequestMethod.POST,
-            consumes = "application/json",
-            produces = "application/json"
+            consumes = MediaType.APPLICATION_XML
     )
-	public void addAct(@RequestBody ActDTO actDTO) {
-		System.out.println(actDTO);
+	public void addAct(@PathVariable String sessionId, @RequestBody String data) throws ParserConfigurationException, SAXException, IOException, JAXBException {
+		System.out.println(sessionId);
+		aldermanService.addAct(data);
 	}
 
 }

@@ -19,7 +19,8 @@
                 </xs:choice>
             </xs:sequence>
             <xs:attribute ref="act:id"/>
-            <xs:attribute name="authorId" type="xs:short"/>
+            <xs:attribute name="username" type="xs:string"/>
+            <xs:attribute name="sessionId" type="xs:string"/>
             <xs:attribute ref="act:title"/>
             <xs:attribute name="status" type="act:status"/>
             <xs:attribute name="country" type="xs:string"/>
@@ -144,6 +145,7 @@
             <xs:enumeration value="ACCEPTED"/>
             <xs:enumeration value="PENDING"/>
             <xs:enumeration value="REJECTED"/>
+            <xs:enumeration value="CANCELED"/>
         </xs:restriction>
     </xs:simpleType>
 </xs:schema>
