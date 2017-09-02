@@ -58,8 +58,18 @@ public class AldermanController {
             consumes = MediaType.APPLICATION_XML
     )
 	public void addAct(@PathVariable String sessionId, @RequestBody String data) throws ParserConfigurationException, SAXException, IOException, JAXBException {
-		System.out.println(sessionId);
-		aldermanService.addAct(data);
+		aldermanService.addAct(sessionId, data);
 	}
+	
+	@RequestMapping(
+            value = "/act/{actId}/addAmendment",
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_XML
+    )
+	public void addAmendment(@PathVariable String actId, @RequestBody String data) throws ParserConfigurationException, SAXException, IOException, JAXBException {
+		System.out.println(actId);
+		aldermanService.addAmendment(actId, data);
+	}
+	
 
 }

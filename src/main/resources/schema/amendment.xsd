@@ -1,31 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="www.assembly.gov.rs/acts"
-    targetNamespace="www.assembly.gov.rs/acts" elementFormDefault="qualified">
-
-    <xs:include id="act" schemaLocation="../../../../../act.xsd"/>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="www.assembly.gov.rs/amendments"
+    targetNamespace="www.assembly.gov.rs/amendments" elementFormDefault="qualified"
+    xmlns:a="www.assembly.gov.rs/acts">
+    <xs:import namespace="www.assembly.gov.rs/acts" schemaLocation="act.xsd"/>
     <xs:element name="amendment">
         <xs:complexType>
             <xs:sequence maxOccurs="unbounded">
                 <xs:element ref="target"/>
-                <xs:element ref="content"/>
             </xs:sequence>
-            <xs:attribute ref="id"/>
-            <xs:attribute name="actId"/>
-            <xs:attribute name="status" type="status"/>
+            <xs:attribute name="id" type="xs:string"/>
+            <xs:attribute name="actId" type="xs:string"/>
+            <xs:attribute name="status" type="a:status"/>
         </xs:complexType>
     </xs:element>
+    <!-- THIS ELEMENT IS USED ONLY WHEN OPERATION == INSERT -->
     <xs:element name="target">
         <xs:complexType>
-            <xs:choice>
-                <xs:element ref="article"/>
-                <xs:element ref="paragraph"/>
-                <xs:element ref="clause"/>
-                <xs:element ref="subclause"/>
-                <xs:element ref="indent"/>
-            </xs:choice>
-            <xs:attribute name="targetId"/>
-            <xs:attribute name="position" type="position" form="unqualified"/>
+            <xs:sequence>
+                <xs:element name="data" type="xs:string"/>
+            </xs:sequence>
+            <xs:attribute name="targetId" type="xs:string"/>
             <xs:attribute name="operation" type="operation"/>
+            <xs:attribute name="position" type="position"/>
         </xs:complexType>
     </xs:element>
     <xs:simpleType name="position">
