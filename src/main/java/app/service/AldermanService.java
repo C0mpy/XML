@@ -69,6 +69,10 @@ public class AldermanService {
 		
 	}
 	
+	public void withdrawAct(String actId) throws JAXBException {
+		actRepository.withdraw(actId);
+	}
+	
 	public void addAmendment(String actId, String xmlAmendment) throws JAXBException {
 
 		// set the class we want to unmarshal to
@@ -90,6 +94,10 @@ public class AldermanService {
 		// call repository's save method
 		amendmentRepository.save(amendment);
 		
+	}
+	
+	public void withdrawAmendment(String amendmentId) throws JAXBException {
+		amendmentRepository.withdraw(amendmentId);
 	}
 
 }

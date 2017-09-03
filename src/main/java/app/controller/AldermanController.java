@@ -62,6 +62,14 @@ public class AldermanController {
 	}
 	
 	@RequestMapping(
+            value = "/act/{actId}/withdraw",
+            method = RequestMethod.POST
+    )
+	public void withdrawAct(@PathVariable String actId) throws ParserConfigurationException, SAXException, IOException, JAXBException {
+		aldermanService.withdrawAct(actId);
+	}
+	
+	@RequestMapping(
             value = "/act/{actId}/addAmendment",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_XML
@@ -69,6 +77,14 @@ public class AldermanController {
 	public void addAmendment(@PathVariable String actId, @RequestBody String data) throws ParserConfigurationException, SAXException, IOException, JAXBException {
 		System.out.println(actId);
 		aldermanService.addAmendment(actId, data);
+	}
+	
+	@RequestMapping(
+            value = "/amendment/{amendmentId}/withdraw",
+            method = RequestMethod.POST
+    )
+	public void withdrawAmendment(@PathVariable String amendmentId) throws ParserConfigurationException, SAXException, IOException, JAXBException {
+		aldermanService.withdrawAmendment(amendmentId);
 	}
 	
 
