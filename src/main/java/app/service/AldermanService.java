@@ -1,7 +1,6 @@
 package app.service;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -10,18 +9,13 @@ import java.util.UUID;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.xml.sax.SAXException;
 
 import app.repository.ActRepository;
 import app.repository.AmendmentRepository;
 import app.repository.SessionRepository;
-import app.util.IDAdapter;
 import app.jaxb_model.Act;
 import app.jaxb_model.Amendment;
 import app.jaxb_model.Status;
@@ -63,14 +57,13 @@ public class AldermanService {
 		
 		// generate ID for Act and all its child elements
 		act.generateId();
-		act.setSessionId(sessionId);
 		
-		actRepository.save(act);
+		actRepository.save(act, sessionId);
 		
 	}
 	
 	public void withdrawAct(String actId) throws JAXBException {
-		actRepository.withdraw(actId);
+		actRepository.setStatus(actId, "WITHDREW");
 	}
 	
 	public void addAmendment(String actId, String xmlAmendment) throws JAXBException {
@@ -88,8 +81,7 @@ public class AldermanService {
 		Amendment amendment = (Amendment)unmarshaller.unmarshal(stream);
 		amendment.setId(UUID.randomUUID().toString());
 		amendment.setActId(actId);
-		amendment.setStatus(Status.PENDING);
-		System.out.println(amendment);
+		amendment.setStatus(Status.SCHEDULED);
 		
 		// call repository's save method
 		amendmentRepository.save(amendment);
@@ -97,7 +89,7 @@ public class AldermanService {
 	}
 	
 	public void withdrawAmendment(String amendmentId) throws JAXBException {
-		amendmentRepository.withdraw(amendmentId);
+		amendmentRepository.setStatus(amendmentId, "WITHDREW");
 	}
 
 }

@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import app.dto.LoginDTO;
-import app.dto.ResponseDTO;
 import app.dto.UserDTO;
-import app.model.User;
 import app.service.UserService;
 
 @RestController
@@ -29,14 +27,14 @@ public class  UserController {
             consumes = "application/json",
             produces = "application/json"
     )
-    public ResponseEntity login(@RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
     	
     	Map<String, Object> result = userService.login(loginDTO);
     	System.out.println(result);
     	if(result != null)
-    		return new ResponseEntity(result, HttpStatus.OK);
+    		return ResponseEntity.status(HttpStatus.OK).body(result);
     	else
-    		return new ResponseEntity(HttpStatus.NOT_FOUND);
+    		return ResponseEntity.status(HttpStatus.OK).body(result);
         
     }
 
@@ -46,9 +44,8 @@ public class  UserController {
             consumes = "application/json",
             produces = "application/json"
     )
-    public ResponseEntity <ResponseDTO> register(@RequestBody UserDTO userDTO) {
-
-        return new ResponseEntity<ResponseDTO>(new ResponseDTO("is ok"), HttpStatus.OK);
+    public ResponseEntity<?> register(@RequestBody UserDTO userDTO) {
+        return ResponseEntity.status(HttpStatus.OK).body("Registered successfully");
     }
 
 

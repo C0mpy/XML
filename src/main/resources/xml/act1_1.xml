@@ -3,10 +3,10 @@
 <a:act xmlns:a="www.assembly.gov.rs/acts"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="www.assembly.gov.rs/acts ../schema/act.xsd"
-       a:title="ПРАВИЛНИК О НАЧИНУ И ПОСТУПКУ ДОДЕЛЕ СРЕДСТАВА ИЗ БУЏЕТА ГРАДА НОВОГ САДА ЗА ПРОГРАМЕ СПОРТСКИХ
-       УДРУЖЕЊА НА ТЕРИТОРИЈИ ГРАДА НОВОГ САДА" status="ACCEPTED" country="РЕПУБЛИКА СРБИЈА" state="АУТОНОМНА ПОКРАЈИНА ВОЈВОДИНА"
+       title="ПРАВИЛНИК О НАЧИНУ И ПОСТУПКУ ДОДЕЛЕ СРЕДСТАВА ИЗ БУЏЕТА ГРАДА НОВОГ САДА ЗА ПРОГРАМЕ СПОРТСКИХ УДРУЖЕЊА НА ТЕРИТОРИЈИ ГРАДА НОВОГ САДА" 
+       country="РЕПУБЛИКА СРБИЈА" state="АУТОНОМНА ПОКРАЈИНА ВОЈВОДИНА"
        city="ГРАД НОВИ САД" broughtBy="ГРАДСКО ВЕЋЕ ГРАДА НОВОГ САДА" issueNumber="6-19/2015-723-II" date="31. децембар 2015. године"
-       mayor="Милош Вучевић, с.р." username="alderman">
+       mayor="Милош Вучевић, с.р.">
     
     <a:preamble>
         На основу члана 12. Одлуке о обезбеђивању средстава
@@ -16,8 +16,8 @@
         децембра 2015. године, доноси
     </a:preamble>
     
-    <a:chapter number="I" a:title="ОПШТА ОДРЕДБА">
-        <a:article a:number="1">
+    <a:chapter number="I" title="ОПШТА ОДРЕДБА">
+        <a:article number="1">
             <a:paragraph>
                 <a:content>
                     Овим правилником ближе се уређују начин и поступак
@@ -33,9 +33,9 @@
             </a:paragraph>
         </a:article>
     </a:chapter>
-    <a:chapter number="II" a:title="НАЧИН И ПОСТУПАК ДОДЕЛЕ СРЕДСТАВА ИЗ БУЏЕТА ГРАДА НОВОГ САДА ЗА РЕАЛИЗАЦИЈУ
+    <a:chapter number="II" title="НАЧИН И ПОСТУПАК ДОДЕЛЕ СРЕДСТАВА ИЗ БУЏЕТА ГРАДА НОВОГ САДА ЗА РЕАЛИЗАЦИЈУ
         ГОДИШЊИХ И ПОСЕБНИХ ПРОГРАМА">
-        <a:article a:number="2">
+        <a:article number="2">
             <a:paragraph>
                 <a:content>
                     Спортском удружењу могу да се доделе средства из
@@ -64,7 +64,7 @@
                 </a:content>
             </a:paragraph>
         </a:article>
-        <a:article a:number="3">
+        <a:article number="3">
             <a:paragraph>
                 <a:content>
                     Спортско удружење доставља свој предлог годишњег,
@@ -74,7 +74,7 @@
                 </a:content>
             </a:paragraph>
         </a:article>
-        <a:article a:number="4">
+        <a:article number="4">
             <a:paragraph>
                 <a:content>
                     Анализу и оцену поднетих предлога годишњих, одно-
@@ -85,7 +85,7 @@
                 </a:content>
             </a:paragraph>
         </a:article>
-        <a:article a:number="5">
+        <a:article number="5">
             <a:paragraph>
                 <a:content>
                     Анализа и оцена поднетих предлога годишњих, одно-
@@ -94,7 +94,7 @@
                 </a:content>
             </a:paragraph>
         </a:article>
-        <a:article a:number="6">
+        <a:article number="6">
             <a:paragraph>
                 <a:content>
                     Општа мерила на основу којих Комисија врши анализу
@@ -111,7 +111,7 @@
                 </a:content>
             </a:paragraph>
         </a:article>
-        <a:article a:number="7">
+        <a:article number="7">
             <a:paragraph>
                 <a:content>
                     Посебна мерила на основу којих Комисија врши оцену
@@ -137,7 +137,7 @@
                 </a:content>
             </a:paragraph>
         </a:article>
-        <a:article a:number="8">
+        <a:article number="8">
             <a:paragraph>
                 <a:content>
                     Након извршене анализе и оцене поднетих предлога
@@ -157,7 +157,7 @@
                 </a:content>
             </a:paragraph>
         </a:article>
-        <a:article a:number="9">
+        <a:article number="9">
             <a:paragraph>
                 <a:content>
                     Градско веће, на предлог Комисије, доноси појединачна
@@ -166,7 +166,7 @@
                 </a:content>
             </a:paragraph>
         </a:article>
-        <a:article a:number="10">
+        <a:article number="10">
             <a:paragraph>
                 <a:content>
                     Решење о одобрењу годишњег, односно посебног
@@ -176,7 +176,7 @@
                 </a:content>
             </a:paragraph>
         </a:article>
-        <a:article a:number="11">
+        <a:article number="11">
             <a:paragraph>
                 <a:content>
                     Градска управа са спортским удружењем, коме је одо-
@@ -195,7 +195,7 @@
                 </a:content>
             </a:paragraph>
         </a:article>
-        <a:article a:number="12">
+        <a:article number="12">
             <a:paragraph>
                 <a:content>
                     Средства из буџета Града за реализацију годишњег,
@@ -210,7 +210,7 @@
                 </a:content>
             </a:paragraph>
         </a:article>
-        <a:article a:number="13">
+        <a:article number="13">
             <a:paragraph>
                 <a:content>
                     Поступци започети до дана ступања на снагу овог пра-
@@ -222,7 +222,7 @@
                 </a:content>
             </a:paragraph>
         </a:article>
-        <a:article a:number="14">
+        <a:article number="14">
             <a:paragraph>
                 <a:content>
                     Даном ступања на снагу овог правилника престаје да
@@ -233,7 +233,7 @@
                 </a:content>
             </a:paragraph>
         </a:article>
-        <a:article a:number="15">
+        <a:article number="15">
             <a:paragraph>
                 <a:content>
                     Овај правилник ступа на снагу осмог дана од дана

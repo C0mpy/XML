@@ -7,6 +7,7 @@ import app.service.PresidentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,12 +21,12 @@ public class PresidentController {
     private PresidentService presidentService;
 
 	@RequestMapping(
-            value = "/addSession",
+			value = "/addSession",
             method = RequestMethod.POST,
             consumes = "application/json",
-            produces = "application/json"
+            produces = "application/text"
     )
-    public ResponseEntity addSession(@RequestBody RequestDTO requestDTO) {
+    public ResponseEntity<?> addSession(@RequestBody RequestDTO requestDTO) {
 		if(DateFormat.isValid(requestDTO.getRequest())) {
 			Session session = new Session(requestDTO.getRequest());
 			presidentService.addSession(session);
@@ -34,29 +35,60 @@ public class PresidentController {
 		else {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Parameter");
 		}
-        
     }
 	
 	@RequestMapping(
-            value = "/startSession",
-            method = RequestMethod.POST,
-            consumes = "application/json",
-            produces = "application/json"
+            value = "/session/{sessionId}/start",
+            method = RequestMethod.POST
     )
-    public ResponseEntity startSession(@RequestBody RequestDTO requestDTO) {
-		presidentService.startSession(requestDTO.getRequest());
+    public ResponseEntity<?> startSession(@PathVariable String sessionId) {
+		presidentService.startSession(sessionId);
 		return ResponseEntity.status(HttpStatus.OK).body("Session started");
     }
 	
 	@RequestMapping(
-            value = "/endSession",
-            method = RequestMethod.POST,
-            consumes = "application/json",
-            produces = "application/json"
+            value = "/session/{sessionId}/end",
+            method = RequestMethod.POST
     )
-    public ResponseEntity endSession(@RequestBody RequestDTO requestDTO) {
-		presidentService.endSession(requestDTO.getRequest());
+    public ResponseEntity<?> endSession(@PathVariable String sessionId) {
+		presidentService.endSession(sessionId);
 		return ResponseEntity.status(HttpStatus.OK).body("Session ended");
+    }
+	
+	@RequestMapping(
+            value = "/act/{actId}/accept",
+            method = RequestMethod.POST
+    )
+    public ResponseEntity<?> acceptAct(@PathVariable String actId) {
+		presidentService.acceptAct(actId);
+		return ResponseEntity.status(HttpStatus.OK).body("Act accepted");
+    }
+	
+	@RequestMapping(
+            value = "/act/{actId}/reject",
+            method = RequestMethod.POST
+    )
+    public ResponseEntity<?> rejectAct(@PathVariable String actId) {
+		presidentService.rejectAct(actId);
+		return ResponseEntity.status(HttpStatus.OK).body("Act rejected");
+    }
+	
+	@RequestMapping(
+            value = "/amendment/{amendmentId}/accept",
+            method = RequestMethod.POST
+    )
+    public ResponseEntity<?> acceptAmendment(@PathVariable String amendmentId) {
+		presidentService.acceptAmendment(amendmentId);
+		return ResponseEntity.status(HttpStatus.OK).body("Amendment accepted");
+    }
+	
+	@RequestMapping(
+            value = "/amendment/{amendmentId}/reject",
+            method = RequestMethod.POST
+    )
+    public ResponseEntity<?> rejectAmendment(@PathVariable String amendmentId) {
+		presidentService.rejectAmendment(amendmentId);
+		return ResponseEntity.status(HttpStatus.OK).body("Amendment rejected");
     }
 
 }

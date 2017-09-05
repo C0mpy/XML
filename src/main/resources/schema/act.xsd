@@ -18,11 +18,8 @@
                     </xs:sequence>
                 </xs:choice>
             </xs:sequence>
-            <xs:attribute name="id" type="xs:string"/>
-            <xs:attribute name="username" type="xs:string"/>
-            <xs:attribute name="sessionId" type="xs:string"/>
+            <xs:attribute name="id" type="xs:ID"/>
             <xs:attribute name="title" type="xs:string"/>
-            <xs:attribute name="status" type="act:status"/>
             <xs:attribute name="country" type="xs:string"/>
             <xs:attribute name="state" type="xs:string"/>
             <xs:attribute name="city" type="xs:string"/>
@@ -37,7 +34,7 @@
             <xs:sequence>
                 <xs:element maxOccurs="unbounded" minOccurs="2" ref="act:chapter"/>
             </xs:sequence>
-            <xs:attribute name="id" type="xs:string"/>
+            <xs:attribute name="id" type="xs:ID"/>
             <xs:attribute name="number" type="xs:string"/>
             <xs:attribute name="title" type="xs:string"/>
         </xs:complexType>
@@ -53,7 +50,7 @@
                 </xs:sequence>
                 <xs:element maxOccurs="1" ref="act:content"/>
             </xs:choice>
-            <xs:attribute name="id" type="xs:string"/>
+            <xs:attribute name="id" type="xs:ID"/>
             <xs:attribute name="number" type="xs:string"/>
             <xs:attribute name="title" type="xs:string"/>
         </xs:complexType>
@@ -66,7 +63,7 @@
                     <xs:element ref="act:article" maxOccurs="unbounded"/>
                 </xs:sequence>
             </xs:choice>
-            <xs:attribute name="id" type="xs:string"/>
+            <xs:attribute name="id" type="xs:ID"/>
             <xs:attribute name="number" type="xs:int"/>
             <xs:attribute name="title" type="xs:string"/>
         </xs:complexType>
@@ -76,7 +73,7 @@
             <xs:sequence>
                 <xs:element ref="act:article" maxOccurs="unbounded"/>
             </xs:sequence>
-            <xs:attribute name="id" type="xs:string"/>
+            <xs:attribute name="id" type="xs:ID"/>
             <xs:attribute name="title" type="xs:string"/>
             <xs:attribute name="mark" type="xs:string"/>
         </xs:complexType>
@@ -86,7 +83,7 @@
             <xs:sequence>
                 <xs:element maxOccurs="unbounded" ref="act:paragraph"/>
             </xs:sequence>
-            <xs:attribute name="id" type="xs:string"/>
+            <xs:attribute name="id" type="xs:ID"/>
             <xs:attribute name="title" type="xs:string"/>
             <xs:attribute name="number" type="xs:int"/>
         </xs:complexType>
@@ -99,7 +96,7 @@
                 </xs:sequence>
                 <xs:element ref="act:content"/>
             </xs:choice>
-            <xs:attribute name="id" type="xs:string"/>
+            <xs:attribute name="id" type="xs:ID"/>
         </xs:complexType>
     </xs:element>
     <xs:element name="clause">
@@ -110,7 +107,7 @@
                 </xs:sequence>
                 <xs:element ref="act:content"/>
             </xs:choice>
-            <xs:attribute name="id" type="xs:string"/>
+            <xs:attribute name="id" type="xs:ID"/>
             <xs:attribute name="number" type="xs:int"/>
         </xs:complexType>
     </xs:element>
@@ -122,7 +119,7 @@
                 </xs:sequence>
                 <xs:element ref="act:content"/>
             </xs:choice>
-            <xs:attribute name="id" type="xs:string"/>
+            <xs:attribute name="id" type="xs:ID"/>
             <xs:attribute name="number" type="xs:int"/>
         </xs:complexType>
     </xs:element>
@@ -131,14 +128,23 @@
             <xs:sequence>
                 <xs:element ref="act:content"/>
             </xs:sequence>
-            <xs:attribute name="id" type="xs:string"/>
+            <xs:attribute name="id" type="xs:ID"/>
         </xs:complexType>
     </xs:element>
-    <xs:element name="content" type="xs:string"/>
+    <xs:element name="content" type="act:data"/>
+
+    <!-- this is used so that we can references within element data content -->
+    <xs:complexType mixed="true" name="data">
+        <xs:sequence minOccurs="0">
+            <xs:element maxOccurs="unbounded" name="reference" type="xs:IDREF" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
     <xs:simpleType name="status">
         <xs:restriction base="xs:token">
             <xs:enumeration value="ACCEPTED"/>
-            <xs:enumeration value="PENDING"/>
+            <xs:enumeration value="SCHEDULED"/>
+            <xs:enumeration value="IN_PROCESS"/>
             <xs:enumeration value="REJECTED"/>
             <xs:enumeration value="CANCELED"/>
         </xs:restriction>

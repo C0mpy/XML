@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.xml.sax.SAXException;
 
-import app.dto.ActDTO;
 import app.dto.RequestDTO;
 import app.model.Session;
 import app.service.AldermanService;
@@ -30,7 +29,7 @@ public class AldermanController {
     private AldermanService aldermanService;
 	
 	@RequestMapping(
-            value = "/getSessions",
+            value = "/session/getall",
             method = RequestMethod.GET
     )
     public ResponseEntity<?> getSessions() {
@@ -41,13 +40,12 @@ public class AldermanController {
     }
 	
 	@RequestMapping(
-            value = "/getSession",
+            value = "/session/get/{sessionId}",
             method = RequestMethod.POST,
-            consumes = "application/json",
             produces = "application/json"
     )
-	public ResponseEntity getSession(@RequestBody RequestDTO requestDTO) {
-		Session session = aldermanService.getSession(requestDTO.getRequest());
+	public ResponseEntity<?> getSession(@PathVariable String sessionId) {
+		Session session = aldermanService.getSession(sessionId);
 		return ResponseEntity.status(HttpStatus.OK).body(session);
 		
 	}
@@ -57,16 +55,18 @@ public class AldermanController {
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_XML
     )
-	public void addAct(@PathVariable String sessionId, @RequestBody String data) throws ParserConfigurationException, SAXException, IOException, JAXBException {
+	public ResponseEntity<?> addAct(@PathVariable String sessionId, @RequestBody String data) throws ParserConfigurationException, SAXException, IOException, JAXBException {
 		aldermanService.addAct(sessionId, data);
+		return ResponseEntity.status(HttpStatus.OK).body("Act added");
 	}
 	
 	@RequestMapping(
             value = "/act/{actId}/withdraw",
             method = RequestMethod.POST
     )
-	public void withdrawAct(@PathVariable String actId) throws ParserConfigurationException, SAXException, IOException, JAXBException {
+	public ResponseEntity<?> withdrawAct(@PathVariable String actId) throws ParserConfigurationException, SAXException, IOException, JAXBException {
 		aldermanService.withdrawAct(actId);
+		return ResponseEntity.status(HttpStatus.OK).body("Act withdrew");
 	}
 	
 	@RequestMapping(
@@ -74,18 +74,18 @@ public class AldermanController {
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_XML
     )
-	public void addAmendment(@PathVariable String actId, @RequestBody String data) throws ParserConfigurationException, SAXException, IOException, JAXBException {
-		System.out.println(actId);
+	public ResponseEntity<?> addAmendment(@PathVariable String actId, @RequestBody String data) throws ParserConfigurationException, SAXException, IOException, JAXBException {
 		aldermanService.addAmendment(actId, data);
+		return ResponseEntity.status(HttpStatus.OK).body("Amendment added");
 	}
 	
 	@RequestMapping(
             value = "/amendment/{amendmentId}/withdraw",
             method = RequestMethod.POST
     )
-	public void withdrawAmendment(@PathVariable String amendmentId) throws ParserConfigurationException, SAXException, IOException, JAXBException {
+	public ResponseEntity<?> withdrawAmendment(@PathVariable String amendmentId) throws ParserConfigurationException, SAXException, IOException, JAXBException {
 		aldermanService.withdrawAmendment(amendmentId);
+		return ResponseEntity.status(HttpStatus.OK).body("Amendment withdrew");
 	}
-	
 
 }

@@ -30,11 +30,15 @@ public class AmendmentRepository {
 			// create new context bound to the Act class
 			JAXBContext context = JAXBContext.newInstance(Amendment.class);
 			
-			// create handle xml content
+			// create handle for xml content
 			JAXBHandle<Amendment> handle = new JAXBHandle<>(context);
 			handle.set(amendment);
 			
-			DocumentMetadataHandle metadataHandle = getMetadata(amendment);
+			// create handle for metadata
+			DocumentMetadataHandle metadataHandle = new DocumentMetadataHandle();
+			metadataHandle.withMetadataValue("id", amendment.getId());
+			metadataHandle.withMetadataValue("actId", amendment.getActId());
+			metadataHandle.withMetadataValue("status", amendment.getStatus().toString());
 			
 			docMgr.write("/amendments/" + amendment.getId(), metadataHandle, handle);
 			
@@ -42,7 +46,7 @@ public class AmendmentRepository {
 			
 		}
 	
-	public void withdraw(String amendmentId) throws JAXBException {
+	public void setStatus(String amendmentId, String status) {
 		
 		@SuppressWarnings("deprecation")
 		DatabaseClient client = DatabaseClientFactory.newClient(MarklogicProperties.HOST, MarklogicProperties.PORT, MarklogicProperties.DATABASE,
@@ -54,7 +58,7 @@ public class AmendmentRepository {
 		DocumentMetadataPatchBuilder builder = docMgr.newPatchBuilder(Format.XML);
 		
 		// set metadata value
-		builder.addMetadataValue("status", "CANCELED");
+		builder.addMetadataValue("status", status);
 		
 		// save to database
 		docMgr.patch("/amendments/" + amendmentId, builder.build());
@@ -62,16 +66,5 @@ public class AmendmentRepository {
 		client.release();
 		
 	}
-	
-	// extract metadata from Object and put it in DocumentMetadataHandle
-	private DocumentMetadataHandle getMetadata(Amendment amendment) {
-		
-		DocumentMetadataHandle metadataHandle = new DocumentMetadataHandle();
-		
-		metadataHandle.withMetadataValue("id", amendment.getId());
-		metadataHandle.withMetadataValue("actId", amendment.getActId());
-		metadataHandle.withMetadataValue("status", amendment.getStatus().toString());
-		
-		return metadataHandle;
-	}
+
 }

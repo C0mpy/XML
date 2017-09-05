@@ -8,7 +8,7 @@
             <xs:sequence maxOccurs="unbounded">
                 <xs:element ref="target"/>
             </xs:sequence>
-            <xs:attribute name="id" type="xs:string"/>
+            <xs:attribute name="id" type="xs:string" use="optional"/>
             <xs:attribute name="actId" type="xs:string"/>
             <xs:attribute name="status" type="a:status"/>
         </xs:complexType>
@@ -17,10 +17,21 @@
     <xs:element name="target">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="data" type="xs:string"/>
+                <xs:choice>
+                    <xs:element ref="a:part"/>
+                    <xs:element ref="a:chapter"/>
+                    <xs:element ref="a:section"/>
+                    <xs:element ref="a:subsection"/>
+                    <xs:element ref="a:article"/>
+                    <xs:element ref="a:paragraph"/>
+                    <xs:element ref="a:clause"/>
+                    <xs:element ref="a:subclause"/>
+                    <xs:element ref="a:indent"/>
+                    <xs:element ref="a:content"/>
+                </xs:choice>
             </xs:sequence>
-            <xs:attribute name="targetId" type="xs:string"/>
-            <xs:attribute name="operation" type="operation"/>
+            <xs:attribute name="targetId" type="xs:string" use="required"/>
+            <xs:attribute name="operation" type="operation" use="required"/>
             <xs:attribute name="position" type="position"/>
         </xs:complexType>
     </xs:element>
