@@ -41,7 +41,7 @@ public class AldermanService {
 		return sessionRepository.findOne(Long.parseLong(sessionId));
 	}
 	
-	public void addAct(String sessionId, String xmlAct) throws JAXBException {
+	public String addAct(String sessionId, String xmlAct) throws JAXBException {
 
 		// set the class we want to unmarshal to
 		JAXBContext context = JAXBContext.newInstance(Act.class);
@@ -59,6 +59,7 @@ public class AldermanService {
 		act.generateId();
 		
 		actRepository.save(act, sessionId);
+		return act.getId();
 		
 	}
 	
@@ -66,7 +67,7 @@ public class AldermanService {
 		actRepository.setStatus(actId, "WITHDREW");
 	}
 	
-	public void addAmendment(String actId, String xmlAmendment) throws JAXBException {
+	public String addAmendment(String actId, String xmlAmendment) throws JAXBException {
 
 		// set the class we want to unmarshal to
 		JAXBContext context = JAXBContext.newInstance(Amendment.class);
@@ -85,6 +86,7 @@ public class AldermanService {
 		
 		// call repository's save method
 		amendmentRepository.save(amendment);
+		return amendment.getId();
 		
 	}
 	

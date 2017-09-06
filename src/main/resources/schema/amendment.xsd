@@ -5,7 +5,7 @@
     <xs:import namespace="www.assembly.gov.rs/acts" schemaLocation="act.xsd"/>
     <xs:element name="amendment">
         <xs:complexType>
-            <xs:sequence maxOccurs="unbounded">
+            <xs:sequence maxOccurs="unbounded" minOccurs="0">
                 <xs:element ref="target"/>
             </xs:sequence>
             <xs:attribute name="id" type="xs:string" use="optional"/>
@@ -33,6 +33,7 @@
             <xs:attribute name="targetId" type="xs:string" use="required"/>
             <xs:attribute name="operation" type="operation" use="required"/>
             <xs:attribute name="position" type="position"/>
+            <xs:attribute name="type" type="type"/>
         </xs:complexType>
     </xs:element>
     <xs:simpleType name="position">
@@ -46,6 +47,20 @@
             <xs:enumeration value="INSERT"/>
             <xs:enumeration value="UPDATE"/>
             <xs:enumeration value="DELETE"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="type">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="PART"/>
+            <xs:enumeration value="CHAPTER"/>
+            <xs:enumeration value="SECTION"/>
+            <xs:enumeration value="SUBSECTION"/>
+            <xs:enumeration value="ARTICLE"/>
+            <xs:enumeration value="PARAGRAPH"/>
+            <xs:enumeration value="CLAUSE"/>
+            <xs:enumeration value="SUBCLAUSE"/>
+            <xs:enumeration value="INDENT"/>
+            <xs:enumeration value="CONTENT"/>
         </xs:restriction>
     </xs:simpleType>
 </xs:schema>

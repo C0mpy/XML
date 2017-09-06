@@ -4,6 +4,9 @@ import app.util.DateFormat;
 import app.dto.RequestDTO;
 import app.model.Session;
 import app.service.PresidentService;
+
+import javax.xml.bind.JAXBException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -77,7 +80,7 @@ public class PresidentController {
             value = "/amendment/{amendmentId}/accept",
             method = RequestMethod.POST
     )
-    public ResponseEntity<?> acceptAmendment(@PathVariable String amendmentId) {
+    public ResponseEntity<?> acceptAmendment(@PathVariable String amendmentId) throws JAXBException {
 		presidentService.acceptAmendment(amendmentId);
 		return ResponseEntity.status(HttpStatus.OK).body("Amendment accepted");
     }

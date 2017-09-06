@@ -66,5 +66,29 @@ public class AmendmentRepository {
 		client.release();
 		
 	}
+	
+	public Amendment findOne(String amendmentId) throws JAXBException {
+		
+		@SuppressWarnings("deprecation")
+		DatabaseClient client = DatabaseClientFactory.newClient(MarklogicProperties.HOST, MarklogicProperties.PORT, MarklogicProperties.DATABASE,
+				MarklogicProperties.USER, MarklogicProperties.PASS, DatabaseClientFactory.Authentication.DIGEST);
+		
+		XMLDocumentManager docMgr = client.newXMLDocumentManager();
+		
+	    final JAXBContext context = JAXBContext.newInstance(Amendment.class);
+	    
+        final JAXBHandle<Amendment> handle = new JAXBHandle<>(context);
+        
+        docMgr.read("/amendments/" + amendmentId, handle);
+        final Amendment amendment = handle.get();
+
+		client.release();
+		
+		return amendment;
+	}
+	
+	public void applyAmendmentToAct() {
+		
+	}
 
 }

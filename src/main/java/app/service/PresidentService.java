@@ -1,8 +1,12 @@
 package app.service;
 
+import javax.xml.bind.JAXBException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import app.jaxb_model.Amendment;
+import app.jaxb_model.Target;
 import app.model.Session;
 import app.repository.ActRepository;
 import app.repository.AmendmentRepository;
@@ -44,8 +48,15 @@ public class PresidentService {
 		actRepository.setStatus(actId, "REJECTED");	
 	}
 	
-	public void acceptAmendment(String amendmentId) {
-		amendmentRepository.setStatus(amendmentId, "ACCEPTED");	
+	public void acceptAmendment(String amendmentId) throws JAXBException {
+		
+		// set status of the amendment in database
+		amendmentRepository.setStatus(amendmentId, "ACCEPTED");
+		Amendment amendment = amendmentRepository.findOne(amendmentId);
+		
+		for(Target t : amendment.getTarget()) {
+			actRepository.update(amendment.getActId(), t);
+		}
 	}
 	
 	public void rejectAmendment(String amendmentId) {

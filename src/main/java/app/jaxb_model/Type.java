@@ -13,34 +13,48 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for operation.
+ * <p>Java class for type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="operation">
+ * &lt;simpleType name="type">
  *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}token">
- *     &lt;enumeration value="INSERT"/>
- *     &lt;enumeration value="UPDATE"/>
- *     &lt;enumeration value="DELETE"/>
+ *     &lt;enumeration value="PART"/>
+ *     &lt;enumeration value="CHAPTER"/>
+ *     &lt;enumeration value="SECTION"/>
+ *     &lt;enumeration value="SUBSECTION"/>
+ *     &lt;enumeration value="ARTICLE"/>
+ *     &lt;enumeration value="PARAGRAPH"/>
+ *     &lt;enumeration value="CLAUSE"/>
+ *     &lt;enumeration value="SUBCLAUSE"/>
+ *     &lt;enumeration value="INDENT"/>
+ *     &lt;enumeration value="CONTENT"/>
  *   &lt;/restriction>
  * &lt;/simpleType>
  * </pre>
  * 
  */
-@XmlType(name = "operation", namespace = "www.assembly.gov.rs/amendments")
+@XmlType(name = "type", namespace = "www.assembly.gov.rs/amendments")
 @XmlEnum
-public enum Operation {
+public enum Type {
 
-    INSERT,
-    UPDATE,
-    DELETE;
+    PART,
+    CHAPTER,
+    SECTION,
+    SUBSECTION,
+    ARTICLE,
+    PARAGRAPH,
+    CLAUSE,
+    SUBCLAUSE,
+    INDENT,
+    CONTENT;
 
     public String value() {
         return name();
     }
 
-    public static Operation fromValue(String v) {
+    public static Type fromValue(String v) {
         return valueOf(v);
     }
 

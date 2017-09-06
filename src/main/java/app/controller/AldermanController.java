@@ -56,8 +56,8 @@ public class AldermanController {
             consumes = MediaType.APPLICATION_XML
     )
 	public ResponseEntity<?> addAct(@PathVariable String sessionId, @RequestBody String data) throws ParserConfigurationException, SAXException, IOException, JAXBException {
-		aldermanService.addAct(sessionId, data);
-		return ResponseEntity.status(HttpStatus.OK).body("Act added");
+		String actId = aldermanService.addAct(sessionId, data);
+		return ResponseEntity.status(HttpStatus.OK).body(actId);
 	}
 	
 	@RequestMapping(
@@ -75,8 +75,8 @@ public class AldermanController {
             consumes = MediaType.APPLICATION_XML
     )
 	public ResponseEntity<?> addAmendment(@PathVariable String actId, @RequestBody String data) throws ParserConfigurationException, SAXException, IOException, JAXBException {
-		aldermanService.addAmendment(actId, data);
-		return ResponseEntity.status(HttpStatus.OK).body("Amendment added");
+		String amendmentId = aldermanService.addAmendment(actId, data);
+		return ResponseEntity.status(HttpStatus.OK).body(amendmentId);
 	}
 	
 	@RequestMapping(
