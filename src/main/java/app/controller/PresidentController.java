@@ -58,15 +58,17 @@ public class PresidentController {
 		return ResponseEntity.status(HttpStatus.OK).body("Session ended");
     }
 	
+	// accept act in principle (u nacelu) and start voting on amendments
 	@RequestMapping(
-            value = "/act/{actId}/accept",
+            value = "/act/{actId}/process",
             method = RequestMethod.POST
     )
-    public ResponseEntity<?> acceptAct(@PathVariable String actId) {
-		presidentService.acceptAct(actId);
-		return ResponseEntity.status(HttpStatus.OK).body("Act accepted");
+    public ResponseEntity<?> processAct(@PathVariable String actId) {
+		presidentService.processAct(actId);
+		return ResponseEntity.status(HttpStatus.OK).body("Act is being voted on amendments");
     }
 	
+	// reject act in principle
 	@RequestMapping(
             value = "/act/{actId}/reject",
             method = RequestMethod.POST
@@ -74,6 +76,16 @@ public class PresidentController {
     public ResponseEntity<?> rejectAct(@PathVariable String actId) {
 		presidentService.rejectAct(actId);
 		return ResponseEntity.status(HttpStatus.OK).body("Act rejected");
+    }
+	
+	// accept act in whole (u celosti) after voting on all the amendments
+	@RequestMapping(
+            value = "/act/{actId}/accept",
+            method = RequestMethod.POST
+    )
+    public ResponseEntity<?> acceptAct(@PathVariable String actId) {
+		presidentService.acceptAct(actId);
+		return ResponseEntity.status(HttpStatus.OK).body("Act accepted");
     }
 	
 	@RequestMapping(

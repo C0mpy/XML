@@ -40,12 +40,16 @@ public class PresidentService {
 		sessionRepository.save(session);
 	}
 	
-	public void acceptAct(String actId) {
-		actRepository.setStatus(actId, "ACCEPTED");	
+	public void processAct(String actId) {
+		actRepository.setStatus(actId, "IN_PROCESS");
 	}
 	
 	public void rejectAct(String actId) {
 		actRepository.setStatus(actId, "REJECTED");	
+	}
+	
+	public void acceptAct(String actId) {
+		actRepository.setStatus(actId, "ACCEPTED");	
 	}
 	
 	public void acceptAmendment(String amendmentId) throws JAXBException {
