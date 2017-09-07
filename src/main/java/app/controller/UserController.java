@@ -1,6 +1,9 @@
 package app.controller;
 
+import java.util.ArrayList;
 import java.util.Map;
+
+import javax.xml.bind.JAXBException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,8 +50,15 @@ public class  UserController {
     public ResponseEntity<?> register(@RequestBody UserDTO userDTO) {
         return ResponseEntity.status(HttpStatus.OK).body("Registered successfully");
     }
-
-
-
+    
+    @RequestMapping(
+            value = "/findByText",
+            method = RequestMethod.POST,
+            consumes = "text/plain"
+    )
+    public ResponseEntity<?> findByText(@RequestBody String text) throws JAXBException {
+    	ArrayList<String> acts = userService.findByText(text);
+        return ResponseEntity.status(HttpStatus.OK).body(acts);
+    }
 
 }

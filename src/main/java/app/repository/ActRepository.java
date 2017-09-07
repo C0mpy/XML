@@ -6,9 +6,14 @@ import com.marklogic.client.document.XMLDocumentManager;
 import com.marklogic.client.document.DocumentPatchBuilder;
 import com.marklogic.client.document.DocumentPatchBuilder.Position;
 import com.marklogic.client.io.DocumentMetadataHandle;
+import com.marklogic.client.io.Format;
 import com.marklogic.client.io.JAXBHandle;
+import com.marklogic.client.io.SearchHandle;
 import com.marklogic.client.io.StringHandle;
 import com.marklogic.client.io.marker.DocumentPatchHandle;
+import com.marklogic.client.query.MatchDocumentSummary;
+import com.marklogic.client.query.QueryManager;
+import com.marklogic.client.query.StringQueryDefinition;
 import com.marklogic.client.semantics.GraphManager;
 import com.marklogic.client.semantics.RDFMimeTypes;
 import com.marklogic.client.semantics.SPARQLQueryDefinition;
@@ -16,6 +21,7 @@ import com.marklogic.client.semantics.SPARQLQueryManager;
 import com.marklogic.client.util.EditableNamespaceContext;
 
 import app.jaxb_model.Act;
+import app.jaxb_model.Amendment;
 import app.jaxb_model.Operation;
 import app.jaxb_model.Paragraph;
 import app.jaxb_model.Target;
@@ -25,6 +31,9 @@ import app.util.MetadataExtractor;
 import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.regex.MatchResult;
 
 import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBContext;
@@ -204,6 +213,54 @@ public class ActRepository {
         // remove first line of xml, marshal generates <?xml version="1.0" encoding="UTF-8" standalone="yes"?> and its excess and produces an error
         xml = xml.substring(xml.indexOf('\n')+1);
         return xml;
+    }
+    
+    public ArrayList<String> findByText(String text) throws JAXBException {
+    	
+    	@SuppressWarnings("deprecation")
+		DatabaseClient client = DatabaseClientFactory.newClient(MarklogicProperties.HOST, MarklogicProperties.PORT, MarklogicProperties.DATABASE,
+				MarklogicProperties.USER, MarklogicProperties.PASS, DatabaseClientFactory.Authentication.DIGEST);
+    	
+    	QueryManager queryMgr = client.newQueryManager();
+    	
+    	// query object
+    	StringQueryDefinition qd = queryMgr.newStringDefinition();
+    	
+    	// limit search to acts
+    	qd.setCollections("/acts/collections");
+    	
+    	// find all acts that contain 'text' string within
+    	qd.setCriteria(text);
+    	SearchHandle results = queryMgr.search(qd, new SearchHandle());
+    	
+    	ArrayList<String> acts = new ArrayList<String>();
+    	
+    	// iterate all act's id's that fit the search, find acts in database by id and add them to the list
+    	for(MatchDocumentSummary mr : results.getMatchResults()) {
+    		String[] parts = mr.getUri().split("/");
+    		String id = parts[2];
+    		Act act = findById(client, id);
+    		acts.add(toXML(act));
+    	}
+    	
+    	return acts;
+    
+    }
+    
+    public Act findById(DatabaseClient client, String id) throws JAXBException {
+    	
+    	XMLDocumentManager docMgr = client.newXMLDocumentManager();
+    	
+    	JAXBContext context = JAXBContext.newInstance(Act.class);
+    	
+    	JAXBHandle<Act> handle = new JAXBHandle<>(context);
+    	
+    	docMgr.read("/acts/" + id, handle);
+        Act act = handle.get();
+
+		client.release();
+		
+		return act;
     }
 
 }
