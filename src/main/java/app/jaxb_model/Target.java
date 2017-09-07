@@ -420,4 +420,12 @@ public class Target {
         this.type = value;
     }
 
+	@Override
+	public String toString() {
+		return "Target [part=" + part + ", chapter=" + chapter + ", section=" + section + ", subsection=" + subsection
+				+ ", article=" + article + ", paragraph=" + paragraph + ", clause=" + clause + ", subclause="
+				+ subclause + ", indent=" + indent + ", content=" + content + ", targetId=" + targetId + ", operation="
+				+ operation + ", position=" + position + ", type=" + type + "]";
+	}
+
 }

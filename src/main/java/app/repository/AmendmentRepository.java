@@ -1,25 +1,38 @@
 package app.repository;
 
+import java.io.UnsupportedEncodingException;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.transform.TransformerException;
 
 import org.springframework.stereotype.Component;
 
 import com.marklogic.client.DatabaseClient;
 import com.marklogic.client.DatabaseClientFactory;
 import com.marklogic.client.document.DocumentMetadataPatchBuilder;
+import com.marklogic.client.document.DocumentPatchBuilder;
 import com.marklogic.client.document.XMLDocumentManager;
 import com.marklogic.client.io.DocumentMetadataHandle;
 import com.marklogic.client.io.Format;
 import com.marklogic.client.io.JAXBHandle;
+import com.marklogic.client.io.StringHandle;
+import com.marklogic.client.semantics.GraphManager;
+import com.marklogic.client.semantics.RDFMimeTypes;
+import com.marklogic.client.semantics.SPARQLQueryDefinition;
+import com.marklogic.client.semantics.SPARQLQueryManager;
+import com.marklogic.client.util.EditableNamespaceContext;
 
 import app.jaxb_model.Amendment;
 import app.util.MarklogicProperties;
+import app.util.MetadataExtractor;
 
 @Component
 public class AmendmentRepository {
 	
-	public void save(Amendment amendment) throws JAXBException {
+	private static String XSLT_FILE = "src/main/resources/xsl/amendment_to_rdf.xsl";
+	
+	public void save(Amendment amendment) throws JAXBException, UnsupportedEncodingException, TransformerException {
 			
 			@SuppressWarnings("deprecation")
 			DatabaseClient client = DatabaseClientFactory.newClient(MarklogicProperties.HOST, MarklogicProperties.PORT, MarklogicProperties.DATABASE,
@@ -27,21 +40,28 @@ public class AmendmentRepository {
 		
 			XMLDocumentManager docMgr = client.newXMLDocumentManager();
 			
-			// create new context bound to the Act class
+			// create new context bound to the Amendment class
 			JAXBContext context = JAXBContext.newInstance(Amendment.class);
 			
 			// create handle for xml content
-			JAXBHandle<Amendment> handle = new JAXBHandle<>(context);
-			handle.set(amendment);
+			JAXBHandle<Amendment> contentHandle = new JAXBHandle<>(context);
+			contentHandle.set(amendment);
 			
-			// create handle for metadata
+			// add amendment in a collection so we can easier query against them later
 			DocumentMetadataHandle metadataHandle = new DocumentMetadataHandle();
-			metadataHandle.withMetadataValue("id", amendment.getId());
-			metadataHandle.withMetadataValue("actId", amendment.getActId());
-			metadataHandle.withMetadataValue("status", amendment.getStatus().toString());
+			metadataHandle.getCollections().add("/amendments/collections");
 			
-			docMgr.write("/amendments/" + amendment.getId(), metadataHandle, handle);
+			// write data to db
+			docMgr.write("/amendments/" + amendment.getId(), metadataHandle, contentHandle);
 			
+			// parse metadata from attributes in xml file to a rdf file
+			String metadata = MetadataExtractor.extract(contentHandle.toString(), XSLT_FILE);
+						
+			// add rdf triplet to the database
+			GraphManager graphManager = client.newGraphManager();
+	        StringHandle stringHandle = new StringHandle(metadata).withMimetype(RDFMimeTypes.RDFXML);
+	        graphManager.merge("/amendments/metadata", stringHandle);
+
 			client.release();
 			
 		}
@@ -54,18 +74,45 @@ public class AmendmentRepository {
 		
 		XMLDocumentManager docMgr = client.newXMLDocumentManager();
 		
-		// used to change existing document's metadata
-		DocumentMetadataPatchBuilder builder = docMgr.newPatchBuilder(Format.XML);
+		// used to change existing document's data
+		DocumentPatchBuilder builder = docMgr.newPatchBuilder();
 		
-		// set metadata value
-		builder.addMetadataValue("status", status);
+		// set namespace so we can use it in patch builder
+		EditableNamespaceContext namespaces = new EditableNamespaceContext();
+        namespaces.put("am", "www.assembly.gov.rs/amendments/");
+        builder.setNamespaces(namespaces);
 		
-		// save to database
-		docMgr.patch("/amendments/" + amendmentId, builder.build());
+        // set status attribute
+     	builder.replaceValue("/am:amendment/@status", status);
+		
+     	// save to database
+     	docMgr.patch("/amendments/" + amendmentId, builder.build());
+     	
+     	// update rdf triple with the new status value
+     	SPARQLQueryManager sparqlQueryManager = client.newSPARQLQueryManager();
+        String subject = "www.assembly.gov.rs/amendments/" + amendmentId;
+        String predicate = "www.assembly.gov.rs/amendments/status";
+        updateTriplet(sparqlQueryManager, "/amendments/metadata", subject, predicate, status);
 		
 		client.release();
 		
 	}
+	
+	// update metadata in rdf triplet in marklogic database
+    public void  updateTriplet(SPARQLQueryManager manager, String metadataURI, String subject, String predicate, String object) {
+    	
+    	// in metadataURI delete triple with subject + predicate combination specified
+    	// then insert a new one with the set object
+        String queryDefinition =
+                        " WITH <" + metadataURI + ">" +
+                        " DELETE { <" + subject + "> <" + predicate + ">  ?o} " +
+                        " INSERT { <" + subject + "> <" + predicate + "> \"" + object + "\" }" +
+                        " WHERE  { <" + subject + "> <" + predicate + ">  ?o}";
+               
+        SPARQLQueryDefinition query = manager.newQueryDefinition(queryDefinition);
+        manager.executeUpdate(query);
+        
+    }
 	
 	public Amendment findOne(String amendmentId) throws JAXBException {
 		

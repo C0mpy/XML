@@ -51,7 +51,7 @@ public class AldermanService {
 		// create unmarshaller we use for converting xml to objects
 		Unmarshaller unmarshaller = context.createUnmarshaller();
 		
-		// convert xml string to a strem we can later use for unmarshal operation
+		// convert xml string to a strem we can later use it for unmarshal operation
 		InputStream stream = new ByteArrayInputStream(xmlAct.getBytes(StandardCharsets.UTF_8));
 		
 		// unmarshall
@@ -71,7 +71,7 @@ public class AldermanService {
 		actRepository.setStatus(actId, "WITHDREW");
 	}
 	
-	public String addAmendment(String actId, String xmlAmendment) throws JAXBException {
+	public String addAmendment(String actId, String xmlAmendment) throws JAXBException, UnsupportedEncodingException, TransformerException {
 
 		// set the class we want to unmarshal to
 		JAXBContext context = JAXBContext.newInstance(Amendment.class);
@@ -79,16 +79,15 @@ public class AldermanService {
 		// create unmarshaller we use for converting xml to objects
 		Unmarshaller unmarshaller = context.createUnmarshaller();
 		
-		// konvertuje se sadrzaj iz Stringa u InputStream kako bi mogli Unmarshall
+		// convert xml string to a strem we can later use it for unmarshal operation
 		InputStream stream = new ByteArrayInputStream(xmlAmendment.getBytes(StandardCharsets.UTF_8));
 		
-		// unmarshall XMLStringa u Amendment objekat
+		// unmarshall
 		Amendment amendment = (Amendment)unmarshaller.unmarshal(stream);
 		amendment.setId(UUID.randomUUID().toString());
 		amendment.setActId(actId);
 		amendment.setStatus(Status.SCHEDULED);
 		
-		// call repository's save method
 		amendmentRepository.save(amendment);
 		return amendment.getId();
 		

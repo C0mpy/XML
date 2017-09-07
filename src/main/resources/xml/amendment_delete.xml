@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<am:amendment xmlns:a="www.assembly.gov.rs/acts"
-    xmlns:am="www.assembly.gov.rs/amendments"
+<am:amendment xmlns:a="www.assembly.gov.rs/acts/"
+    xmlns:am="www.assembly.gov.rs/amendments/"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="www.assembly.gov.rs/amendments file:/C:/Users/ASUS/Desktop/xml_workspace/XML/src/main/resources/schema/amendment.xsd">
+    xsi:schemaLocation="www.assembly.gov.rs/amendments/ file:/C:/Users/ASUS/Desktop/xml_workspace/XML/src/main/resources/schema/amendment.xsd">
     <am:target targetId="aec85d22-3207-4ebe-97f5-86aec9601370" operation="DELETE"/>
 </am:amendment>

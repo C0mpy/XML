@@ -145,4 +145,9 @@ public class Paragraph {
         this.id = value;
     }
 
+	@Override
+	public String toString() {
+		return "Paragraph [clause=" + clause + ", content=" + content + ", id=" + id + "]";
+	}
+
 }

@@ -3,7 +3,6 @@ package app.repository;
 import com.marklogic.client.DatabaseClient;
 import com.marklogic.client.DatabaseClientFactory;
 import com.marklogic.client.document.XMLDocumentManager;
-import com.marklogic.client.document.DocumentMetadataPatchBuilder;
 import com.marklogic.client.document.DocumentPatchBuilder;
 import com.marklogic.client.document.DocumentPatchBuilder.Position;
 import com.marklogic.client.io.DocumentMetadataHandle;
@@ -12,32 +11,25 @@ import com.marklogic.client.io.StringHandle;
 import com.marklogic.client.io.marker.DocumentPatchHandle;
 import com.marklogic.client.semantics.GraphManager;
 import com.marklogic.client.semantics.RDFMimeTypes;
+import com.marklogic.client.semantics.SPARQLQueryDefinition;
+import com.marklogic.client.semantics.SPARQLQueryManager;
 import com.marklogic.client.util.EditableNamespaceContext;
-import com.marklogic.client.io.Format;
 
 import app.jaxb_model.Act;
 import app.jaxb_model.Operation;
+import app.jaxb_model.Paragraph;
 import app.jaxb_model.Target;
 import app.util.MarklogicProperties;
+import app.util.MetadataExtractor;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.InputStream;
 import java.io.Serializable;
-import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 
 import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
 
 import org.springframework.stereotype.Component;
 
@@ -46,7 +38,7 @@ import com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;
 @Component
 public class ActRepository {
 	
-	private static final String XSLT_FILE = "src/main/resources/xsl/xml_to_rdf.xsl";
+	private static String XSLT_FILE = "src/main/resources/xsl/act_to_rdf.xsl";
 
 	public void save(Act act, String sessionId) throws JAXBException, UnsupportedEncodingException, TransformerException {
 		
@@ -62,9 +54,6 @@ public class ActRepository {
 		// create handle for xml content
 		JAXBHandle<Act> contentHandle = new JAXBHandle<>(context);
 		contentHandle.set(act);
-        
-		// parse metadata from attributes in xml file to a rdf file
-		String metadata = getMetadata(contentHandle);
 		
 		// add act in a collection so we can easier query against them later
 		DocumentMetadataHandle metadataHandle = new DocumentMetadataHandle();
@@ -73,41 +62,15 @@ public class ActRepository {
 		// write data to db
 		docMgr.write("/acts/" + act.getId(), metadataHandle, contentHandle);
 		
+		// parse metadata from attributes in xml file to a rdf file
+		String metadata = MetadataExtractor.extract(contentHandle.toString(), XSLT_FILE);
+				
 		// add rdf triplet to the database
 		GraphManager graphManager = client.newGraphManager();
         StringHandle stringHandle = new StringHandle(metadata).withMimetype(RDFMimeTypes.RDFXML);
         graphManager.merge("/acts/metadata", stringHandle);
 
 		client.release();
-	}
-
-	
-	public String getMetadata(JAXBHandle<Act> contentHandle) throws UnsupportedEncodingException, TransformerException {
-		
-		// Create transformation source
-		StreamSource transformSource = new StreamSource(new File(XSLT_FILE));
-		
-		// Initialize GRDDL transformer object
-		TransformerFactory factory = new TransformerFactoryImpl();
-		Transformer transformer = factory.newTransformer(transformSource);
-		
-		// Set the indentation properties
-		transformer.setOutputProperty("{http://xml.apache.org/xalan}indent-amount", "2");
-		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-		
-		// Initialize transformation subject
-		InputStream in = new ByteArrayInputStream(contentHandle.toString().getBytes(StandardCharsets.UTF_8.name()));
-		StreamSource source = new StreamSource(in);
-		
-		// Initialize result stream
-		StringWriter out = new StringWriter();
-		StreamResult result = new StreamResult(out);
-		
-		transformer.transform(source, result);
-		
-		return out.toString();
-		
 	}
 	
 	public void setStatus(String actId, String status) {
@@ -118,18 +81,44 @@ public class ActRepository {
 		
 		XMLDocumentManager docMgr = client.newXMLDocumentManager();
 		
-		// used to change existing document's metadata
-		DocumentMetadataPatchBuilder builder = docMgr.newPatchBuilder(Format.XML);
+		// used to change existing document's data
+		DocumentPatchBuilder builder = docMgr.newPatchBuilder();
 		
-		// set metadata value
-		builder.addMetadataValue("status", status);
+		// set namespace so we can use it in patch builder
+		EditableNamespaceContext namespaces = new EditableNamespaceContext();
+        namespaces.put("a", "www.assembly.gov.rs/acts/");
+        builder.setNamespaces(namespaces);
+		
+        // set status attribute
+		builder.replaceValue("/a:act/@status", status);
 		
 		// save to database
 		docMgr.patch("/acts/" + actId, builder.build());
 		
+		// update rdf triple with the new status value
+		SPARQLQueryManager sparqlQueryManager = client.newSPARQLQueryManager();
+        String subject = "www.assembly.gov.rs/acts/" + actId;
+        String predicate = "www.assembly.gov.rs/acts/status";
+        updateTriplet(sparqlQueryManager, "/acts/metadata", subject, predicate, status);
+
 		client.release();
 		
 	}
+	
+	// update metadata in rdf triplet in marklogic database
+    public void  updateTriplet(SPARQLQueryManager manager, String metadataURI, String subject, String predicate, String object) {
+    	
+    	// in metadataURI delete triple with subject + predicate combination specified
+    	// then insert a new one with the set object
+        String queryDefinition =
+                        " WITH <" + metadataURI + ">" +
+                        " DELETE { <" + subject + "> <" + predicate + ">  ?o} " +
+                        " INSERT { <" + subject + "> <" + predicate + "> \"" + object + "\" }" +
+                        " WHERE  { <" + subject + "> <" + predicate + ">  ?o}";
+               
+        SPARQLQueryDefinition query = manager.newQueryDefinition(queryDefinition);
+        manager.executeUpdate(query);
+    }
 	
 	public void update(String actId, Target target) throws JAXBException {
 		
@@ -141,7 +130,7 @@ public class ActRepository {
 		
 		// this has to be used because elements (PART, CHAPTER...) are in act schema
 		EditableNamespaceContext namespaces = new EditableNamespaceContext();
-		namespaces.put("a", "www.assembly.gov.rs/acts");
+		namespaces.put("a", "www.assembly.gov.rs/acts/");
 		
 		DocumentPatchBuilder builder = docMgr.newPatchBuilder();
 		builder.setNamespaces(namespaces);
@@ -160,9 +149,8 @@ public class ActRepository {
 		else if(target.getOperation() == Operation.INSERT) {
 			String xml = "";
 			Object targetObject = getTargetElement(target);
+			Paragraph p = (Paragraph) targetObject;
 			xml = toXML(targetObject);
-			System.out.println(target.getPosition());
-			System.out.println(xml);
 			builder.insertFragment("//*[@id='" + target.getTargetId() + "']", Position.valueOf(target.getPosition().toString()), xml);
 		}
 	
@@ -190,7 +178,7 @@ public class ActRepository {
 		else if(target.getType().equals("ARTICLE")) {
 			return target.getArticle();
 		}
-		else if(target.getType().equals("PARAGRAPH")) {
+		else if(target.getType().toString().equals("PARAGRAPH")) {
 			return target.getParagraph();
 		}
 		else if(target.getType().equals("CLAUSE")) {
@@ -207,6 +195,7 @@ public class ActRepository {
 		}
 	}
 	
+	// marshal object to xml string
     private String toXML(Object object) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         JAXB.marshal(object, stream);

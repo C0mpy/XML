@@ -76,7 +76,7 @@ public class AldermanController {
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_XML
     )
-	public ResponseEntity<?> addAmendment(@PathVariable String actId, @RequestBody String data) throws ParserConfigurationException, SAXException, IOException, JAXBException {
+	public ResponseEntity<?> addAmendment(@PathVariable String actId, @RequestBody String data) throws ParserConfigurationException, SAXException, IOException, JAXBException, TransformerException {
 		String amendmentId = aldermanService.addAmendment(actId, data);
 		return ResponseEntity.status(HttpStatus.OK).body(amendmentId);
 	}
