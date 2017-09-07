@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE akt>
-<a:act xmlns:a="www.assembly.gov.rs/acts"
+<a:act xmlns:a="www.assembly.gov.rs/acts/"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="www.assembly.gov.rs/acts ../schema/act.xsd"
+       xsi:schemaLocation="www.assembly.gov.rs/acts/ ../schema/act.xsd"
        title="ПРАВИЛНИК О НАЧИНУ И ПОСТУПКУ ДОДЕЛЕ СРЕДСТАВА ИЗ БУЏЕТА ГРАДА НОВОГ САДА ЗА ПРОГРАМЕ СПОРТСКИХ УДРУЖЕЊА НА ТЕРИТОРИЈИ ГРАДА НОВОГ САДА" 
        country="РЕПУБЛИКА СРБИЈА" state="АУТОНОМНА ПОКРАЈИНА ВОЈВОДИНА"
        city="ГРАД НОВИ САД" broughtBy="ГРАДСКО ВЕЋЕ ГРАДА НОВОГ САДА" issueNumber="6-19/2015-723-II" date="31. децембар 2015. године"

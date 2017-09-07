@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="www.assembly.gov.rs/amendments"
-    targetNamespace="www.assembly.gov.rs/amendments" elementFormDefault="qualified"
-    xmlns:a="www.assembly.gov.rs/acts">
-    <xs:import namespace="www.assembly.gov.rs/acts" schemaLocation="act.xsd"/>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="www.assembly.gov.rs/amendments/"
+    targetNamespace="www.assembly.gov.rs/amendments/" elementFormDefault="qualified"
+    xmlns:a="www.assembly.gov.rs/acts/">
+    <xs:import namespace="www.assembly.gov.rs/acts/" schemaLocation="act.xsd"/>
     <xs:element name="amendment">
         <xs:complexType>
             <xs:sequence maxOccurs="unbounded" minOccurs="0">

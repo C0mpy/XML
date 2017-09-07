@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -55,7 +57,7 @@ public class AldermanController {
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_XML
     )
-	public ResponseEntity<?> addAct(@PathVariable String sessionId, @RequestBody String data) throws ParserConfigurationException, SAXException, IOException, JAXBException {
+	public ResponseEntity<?> addAct(@PathVariable String sessionId, @RequestBody String data) throws ParserConfigurationException, SAXException, IOException, JAXBException, TransformerException {
 		String actId = aldermanService.addAct(sessionId, data);
 		return ResponseEntity.status(HttpStatus.OK).body(actId);
 	}

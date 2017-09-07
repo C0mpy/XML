@@ -8,33 +8,47 @@ import com.marklogic.client.document.DocumentPatchBuilder;
 import com.marklogic.client.document.DocumentPatchBuilder.Position;
 import com.marklogic.client.io.DocumentMetadataHandle;
 import com.marklogic.client.io.JAXBHandle;
+import com.marklogic.client.io.StringHandle;
 import com.marklogic.client.io.marker.DocumentPatchHandle;
+import com.marklogic.client.semantics.GraphManager;
+import com.marklogic.client.semantics.RDFMimeTypes;
 import com.marklogic.client.util.EditableNamespaceContext;
 import com.marklogic.client.io.Format;
 
 import app.jaxb_model.Act;
-import app.jaxb_model.Data;
 import app.jaxb_model.Operation;
-import app.jaxb_model.Part;
-import app.jaxb_model.Status;
 import app.jaxb_model.Target;
 import app.util.MarklogicProperties;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
 import org.springframework.stereotype.Component;
 
+import com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;
+
 @Component
 public class ActRepository {
+	
+	private static final String XSLT_FILE = "src/main/resources/xsl/xml_to_rdf.xsl";
 
-	public void save(Act act, String sessionId) throws JAXBException {
+	public void save(Act act, String sessionId) throws JAXBException, UnsupportedEncodingException, TransformerException {
 		
 		@SuppressWarnings("deprecation")
 		DatabaseClient client = DatabaseClientFactory.newClient(MarklogicProperties.HOST, MarklogicProperties.PORT, MarklogicProperties.DATABASE,
@@ -48,16 +62,52 @@ public class ActRepository {
 		// create handle for xml content
 		JAXBHandle<Act> contentHandle = new JAXBHandle<>(context);
 		contentHandle.set(act);
+        
+		// parse metadata from attributes in xml file to a rdf file
+		String metadata = getMetadata(contentHandle);
 		
-		// create handle for metadata
+		// add act in a collection so we can easier query against them later
 		DocumentMetadataHandle metadataHandle = new DocumentMetadataHandle();
-		metadataHandle.withMetadataValue("id", act.getId());
-		metadataHandle.withMetadataValue("status", Status.SCHEDULED.toString());
-		metadataHandle.withMetadataValue("sessionId", sessionId);
-	
+		metadataHandle.getCollections().add("/acts/collections");
+		
+		// write data to db
 		docMgr.write("/acts/" + act.getId(), metadataHandle, contentHandle);
 		
+		// add rdf triplet to the database
+		GraphManager graphManager = client.newGraphManager();
+        StringHandle stringHandle = new StringHandle(metadata).withMimetype(RDFMimeTypes.RDFXML);
+        graphManager.merge("/acts/metadata", stringHandle);
+
 		client.release();
+	}
+
+	
+	public String getMetadata(JAXBHandle<Act> contentHandle) throws UnsupportedEncodingException, TransformerException {
+		
+		// Create transformation source
+		StreamSource transformSource = new StreamSource(new File(XSLT_FILE));
+		
+		// Initialize GRDDL transformer object
+		TransformerFactory factory = new TransformerFactoryImpl();
+		Transformer transformer = factory.newTransformer(transformSource);
+		
+		// Set the indentation properties
+		transformer.setOutputProperty("{http://xml.apache.org/xalan}indent-amount", "2");
+		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+		
+		// Initialize transformation subject
+		InputStream in = new ByteArrayInputStream(contentHandle.toString().getBytes(StandardCharsets.UTF_8.name()));
+		StreamSource source = new StreamSource(in);
+		
+		// Initialize result stream
+		StringWriter out = new StringWriter();
+		StreamResult result = new StreamResult(out);
+		
+		transformer.transform(source, result);
+		
+		return out.toString();
+		
 	}
 	
 	public void setStatus(String actId, String status) {

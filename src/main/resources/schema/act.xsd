@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:act="www.assembly.gov.rs/acts"
-    targetNamespace="www.assembly.gov.rs/acts" elementFormDefault="qualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:act="www.assembly.gov.rs/acts/"
+    targetNamespace="www.assembly.gov.rs/acts/" elementFormDefault="qualified">
 
     <xs:element name="act">
         <xs:complexType>
@@ -19,6 +19,8 @@
                 </xs:choice>
             </xs:sequence>
             <xs:attribute name="id" type="xs:ID"/>
+            <xs:attribute name="sessionId" type="xs:string"/>
+            <xs:attribute name="status" type="act:status"/>
             <xs:attribute name="title" type="xs:string"/>
             <xs:attribute name="country" type="xs:string"/>
             <xs:attribute name="state" type="xs:string"/>

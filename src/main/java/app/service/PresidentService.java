@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import app.jaxb_model.Amendment;
-import app.jaxb_model.Target;
 import app.model.Session;
+import app.jaxb_model.Target;
 import app.repository.ActRepository;
 import app.repository.AmendmentRepository;
 import app.repository.SessionRepository;
