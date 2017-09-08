@@ -1,9 +1,11 @@
 package app.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Map;
 
 import javax.xml.bind.JAXBException;
+import javax.xml.transform.TransformerException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,7 +36,6 @@ public class  UserController {
     public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
     	
     	Map<String, Object> result = userService.login(loginDTO);
-    	System.out.println(result);
     	if(result != null)
     		return ResponseEntity.status(HttpStatus.OK).body(result);
     	else
@@ -71,6 +72,26 @@ public class  UserController {
     public ResponseEntity<?> findByMetadata(@RequestParam("pred") String pred, @RequestParam("obj") String obj) throws JAXBException {
     	ArrayList<String> acts = userService.findByTerm(pred, obj);
     	return ResponseEntity.status(HttpStatus.OK).body(acts);
+    }
+    
+    @RequestMapping(
+            value = "/exportActsXHTML",
+            method = RequestMethod.POST
+    )
+    // method receives predicate and object for the search, exmpl (state="SCHELDUED")
+    public ResponseEntity<?> exportXHTML() throws JAXBException, UnsupportedEncodingException, TransformerException  {
+    	ArrayList<String> xhtml = userService.exportActsXHTML();
+    	return ResponseEntity.status(HttpStatus.OK).body(xhtml);
+    }
+    
+    @RequestMapping(
+            value = "/exportAmendmentsXHTML",
+            method = RequestMethod.POST
+    )
+    // method receives predicate and object for the search, exmpl (state="SCHELDUED")
+    public ResponseEntity<?> exportAmendmentsXHTML() throws JAXBException, UnsupportedEncodingException, TransformerException  {
+    	ArrayList<String> xhtml = userService.exportAmendmentsXHTML();
+    	return ResponseEntity.status(HttpStatus.OK).body(xhtml);
     }
 
 }

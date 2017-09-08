@@ -4,9 +4,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.marklogic.client.DatabaseClient;
 import com.marklogic.client.DatabaseClientFactory;
 import com.marklogic.client.document.XMLDocumentManager;
+import com.marklogic.client.impl.QueryManagerImpl;
 import com.marklogic.client.impl.SPARQLBindingsImpl;
+import com.marklogic.client.document.DocumentPage;
 import com.marklogic.client.document.DocumentPatchBuilder;
 import com.marklogic.client.document.DocumentPatchBuilder.Position;
+import com.marklogic.client.document.DocumentRecord;
 import com.marklogic.client.io.DOMHandle;
 import com.marklogic.client.io.DocumentMetadataHandle;
 import com.marklogic.client.io.Format;
@@ -18,6 +21,8 @@ import com.marklogic.client.io.marker.DocumentPatchHandle;
 import com.marklogic.client.query.MatchDocumentSummary;
 import com.marklogic.client.query.QueryManager;
 import com.marklogic.client.query.StringQueryDefinition;
+import com.marklogic.client.query.StructuredQueryBuilder;
+import com.marklogic.client.query.StructuredQueryDefinition;
 import com.marklogic.client.semantics.GraphManager;
 import com.marklogic.client.semantics.RDFMimeTypes;
 import com.marklogic.client.semantics.SPARQLBindings;
@@ -318,6 +323,35 @@ public class ActRepository {
 		client.release();
 		
 		return act;
+    }
+    
+    public ArrayList<String> findAll() throws JAXBException {
+    	
+    	@SuppressWarnings("deprecation")
+		DatabaseClient client = DatabaseClientFactory.newClient(MarklogicProperties.HOST, MarklogicProperties.PORT, MarklogicProperties.DATABASE,
+				MarklogicProperties.USER, MarklogicProperties.PASS, DatabaseClientFactory.Authentication.DIGEST);
+    	
+    	XMLDocumentManager docMgr = client.newXMLDocumentManager();
+		
+    	// empty query - fetch all
+    	QueryManager qm = client.newQueryManager();
+    	
+    	// limit search to all documents that are in /acts/collections
+    	StringQueryDefinition query =  qm.newStringDefinition();
+    	query.setCollections("/acts/collections");
+    	
+    	DocumentPage documents = docMgr.search(query, 1);
+    	ArrayList<String> acts = new ArrayList<String>();
+    	// add each result to the array
+    	while (documents.hasNext()) {
+    	    DocumentRecord document = documents.next();
+    	    StringHandle handle = new StringHandle();
+    	    acts.add(document.getContent(handle).toString());
+    	}
+    	
+    	return acts;
+
+    	
     }
 
 }

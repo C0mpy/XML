@@ -1,10 +1,12 @@
 package app.service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.bind.JAXBException;
+import javax.xml.transform.TransformerException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +17,9 @@ import app.model.Alderman;
 import app.model.President;
 import app.model.User;
 import app.repository.ActRepository;
+import app.repository.AmendmentRepository;
 import app.repository.UserRepository;
+import app.util.XHTMLExtractor;
 
 @Service
 public class UserService {
@@ -25,6 +29,9 @@ public class UserService {
     
     @Autowired
     private ActRepository actRepository;
+    
+    @Autowired
+    private AmendmentRepository amendmentRepository;
 
     public Map<String, Object> login(LoginDTO loginDTO) {  	
     	
@@ -50,6 +57,25 @@ public class UserService {
     
     public ArrayList<String> findByTerm(String pred, String obj) throws JAXBException {
     	return actRepository.findByTerm(pred, obj);
+    }
+    
+    public ArrayList<String> exportActsXHTML() throws JAXBException, UnsupportedEncodingException, TransformerException {
+    	ArrayList<String> acts = actRepository.findAll();
+    	ArrayList<String> xhtml = new ArrayList<String>();
+    	for(String act : acts) {
+    		xhtml.add(XHTMLExtractor.extract(act, "src/main/resources/xsl/act_to_xhtml.xsl"));
+    	}
+    	return xhtml;
+    }
+    
+    public ArrayList<String> exportAmendmentsXHTML() throws JAXBException, UnsupportedEncodingException, TransformerException {
+    	ArrayList<String> amendments = amendmentRepository.findAll();
+    	ArrayList<String> xhtml = new ArrayList<String>();
+    	System.out.println(amendments.size());
+    	for(String act : amendments) {
+    		xhtml.add(XHTMLExtractor.extract(act, "src/main/resources/xsl/amendment_to_xhtml.xsl"));
+    	}
+    	return xhtml;
     }
     
 }

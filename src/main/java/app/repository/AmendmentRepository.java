@@ -1,6 +1,7 @@
 package app.repository;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -11,12 +12,16 @@ import org.springframework.stereotype.Component;
 import com.marklogic.client.DatabaseClient;
 import com.marklogic.client.DatabaseClientFactory;
 import com.marklogic.client.document.DocumentMetadataPatchBuilder;
+import com.marklogic.client.document.DocumentPage;
 import com.marklogic.client.document.DocumentPatchBuilder;
+import com.marklogic.client.document.DocumentRecord;
 import com.marklogic.client.document.XMLDocumentManager;
 import com.marklogic.client.io.DocumentMetadataHandle;
 import com.marklogic.client.io.Format;
 import com.marklogic.client.io.JAXBHandle;
 import com.marklogic.client.io.StringHandle;
+import com.marklogic.client.query.QueryManager;
+import com.marklogic.client.query.StringQueryDefinition;
 import com.marklogic.client.semantics.GraphManager;
 import com.marklogic.client.semantics.RDFMimeTypes;
 import com.marklogic.client.semantics.SPARQLQueryDefinition;
@@ -134,8 +139,33 @@ public class AmendmentRepository {
 		return amendment;
 	}
 	
-	public void applyAmendmentToAct() {
+    public ArrayList<String> findAll() throws JAXBException {
+    	
+    	@SuppressWarnings("deprecation")
+		DatabaseClient client = DatabaseClientFactory.newClient(MarklogicProperties.HOST, MarklogicProperties.PORT, MarklogicProperties.DATABASE,
+				MarklogicProperties.USER, MarklogicProperties.PASS, DatabaseClientFactory.Authentication.DIGEST);
+    	
+    	XMLDocumentManager docMgr = client.newXMLDocumentManager();
 		
-	}
+    	// empty query - fetch all
+    	QueryManager qm = client.newQueryManager();
+    	
+    	// limit search to all documents that are in /acts/collections
+    	StringQueryDefinition query =  qm.newStringDefinition();
+    	query.setCollections("/amendments/collections");
+    	
+    	DocumentPage documents = docMgr.search(query, 1);
+    	ArrayList<String> amendments = new ArrayList<String>();
+    	// add each result to the array
+    	while (documents.hasNext()) {
+    	    DocumentRecord document = documents.next();
+    	    StringHandle handle = new StringHandle();
+    	    amendments.add(document.getContent(handle).toString());
+    	}
+    	
+    	return amendments;
+
+    	
+    }
 
 }
