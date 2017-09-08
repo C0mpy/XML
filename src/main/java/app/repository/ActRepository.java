@@ -350,7 +350,21 @@ public class ActRepository {
     	}
     	
     	return acts;
+    	
+    }
+    
+    // export acts metadata to json string
+    public String metadataToJSON() {
+    	
+    	@SuppressWarnings("deprecation")
+		DatabaseClient client = DatabaseClientFactory.newClient(MarklogicProperties.HOST, MarklogicProperties.PORT, MarklogicProperties.DATABASE,
+				MarklogicProperties.USER, MarklogicProperties.PASS, DatabaseClientFactory.Authentication.DIGEST);
+    	
+    	 GraphManager graphManager = client.newGraphManager();
+         String content = graphManager.read("acts/metadata", new StringHandle().withMimetype(RDFMimeTypes.RDFJSON)).withFormat(Format.JSON).get();
+         client.release();
 
+         return content;
     	
     }
 

@@ -113,5 +113,24 @@ public class  UserController {
     	return ResponseEntity.status(HttpStatus.OK).body("Generated PDF");
     }
     
+    @RequestMapping(
+            value = "/exportActMetadataJSON",
+            method = RequestMethod.POST,
+            produces = "application/json"
+    )
+    public ResponseEntity<?> exportActMetadataJSON() throws JAXBException, TransformerException, IOException, DocumentException  {
+    	String metadata = userService.exportActMetadataJSON();
+    	return ResponseEntity.status(HttpStatus.OK).body(metadata);
+    }
+    
+    @RequestMapping(
+            value = "/exportAmendmentMetadataJSON",
+            method = RequestMethod.POST,
+            produces = "application/json"
+    )
+    public ResponseEntity<?> exportAmendmentMetadataJSON() throws JAXBException, TransformerException, IOException, DocumentException  {
+    	String metadata = userService.exportAmendmentMetadataJSON();
+    	return ResponseEntity.status(HttpStatus.OK).body(metadata);
+    }
 
 }

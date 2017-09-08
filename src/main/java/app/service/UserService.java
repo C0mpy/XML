@@ -98,4 +98,12 @@ public class UserService {
     	}
     }
     
+    public String exportActMetadataJSON() {
+    	return actRepository.metadataToJSON();
+    }
+    
+    public String exportAmendmentMetadataJSON() {
+    	return amendmentRepository.metadataToJSON();
+    }
+    
 }

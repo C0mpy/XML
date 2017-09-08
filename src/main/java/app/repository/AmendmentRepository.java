@@ -65,7 +65,7 @@ public class AmendmentRepository {
 			// add rdf triplet to the database
 			GraphManager graphManager = client.newGraphManager();
 	        StringHandle stringHandle = new StringHandle(metadata).withMimetype(RDFMimeTypes.RDFXML);
-	        graphManager.merge("/amendments/metadata", stringHandle);
+	        graphManager.merge("amendments/metadata", stringHandle);
 
 			client.release();
 			
@@ -97,7 +97,7 @@ public class AmendmentRepository {
      	SPARQLQueryManager sparqlQueryManager = client.newSPARQLQueryManager();
         String subject = "www.assembly.gov.rs/amendments/" + amendmentId;
         String predicate = "www.assembly.gov.rs/amendments/status";
-        updateTriplet(sparqlQueryManager, "/amendments/metadata", subject, predicate, status);
+        updateTriplet(sparqlQueryManager, "amendments/metadata", subject, predicate, status);
 		
 		client.release();
 		
@@ -164,7 +164,21 @@ public class AmendmentRepository {
     	}
     	
     	return amendments;
+    	
+    }
+    
+    // export amendments metadata to json string
+    public String metadataToJSON() {
+    	
+    	@SuppressWarnings("deprecation")
+		DatabaseClient client = DatabaseClientFactory.newClient(MarklogicProperties.HOST, MarklogicProperties.PORT, MarklogicProperties.DATABASE,
+				MarklogicProperties.USER, MarklogicProperties.PASS, DatabaseClientFactory.Authentication.DIGEST);
+    	
+    	 GraphManager graphManager = client.newGraphManager();
+         String content = graphManager.read("amendments/metadata", new StringHandle().withMimetype(RDFMimeTypes.RDFJSON)).withFormat(Format.JSON).get();
+         client.release();
 
+         return content;
     	
     }
 
