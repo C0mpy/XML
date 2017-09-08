@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import app.dto.LoginDTO;
@@ -59,6 +60,17 @@ public class  UserController {
     public ResponseEntity<?> findByText(@RequestBody String text) throws JAXBException {
     	ArrayList<String> acts = userService.findByText(text);
         return ResponseEntity.status(HttpStatus.OK).body(acts);
+    }
+    
+    @RequestMapping(
+            value = "/findByMetadata",
+            method = RequestMethod.POST,
+            consumes = "application/json"
+    )
+    // method receives predicate and object for the search, exmpl (state="SCHELDUED")
+    public ResponseEntity<?> findByMetadata(@RequestParam("pred") String pred, @RequestParam("obj") String obj) throws JAXBException {
+    	ArrayList<String> acts = userService.findByTerm(pred, obj);
+    	return ResponseEntity.status(HttpStatus.OK).body(acts);
     }
 
 }

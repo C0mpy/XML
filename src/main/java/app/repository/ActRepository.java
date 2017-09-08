@@ -1,13 +1,17 @@
 package app.repository;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.marklogic.client.DatabaseClient;
 import com.marklogic.client.DatabaseClientFactory;
 import com.marklogic.client.document.XMLDocumentManager;
+import com.marklogic.client.impl.SPARQLBindingsImpl;
 import com.marklogic.client.document.DocumentPatchBuilder;
 import com.marklogic.client.document.DocumentPatchBuilder.Position;
+import com.marklogic.client.io.DOMHandle;
 import com.marklogic.client.io.DocumentMetadataHandle;
 import com.marklogic.client.io.Format;
 import com.marklogic.client.io.JAXBHandle;
+import com.marklogic.client.io.JacksonHandle;
 import com.marklogic.client.io.SearchHandle;
 import com.marklogic.client.io.StringHandle;
 import com.marklogic.client.io.marker.DocumentPatchHandle;
@@ -16,6 +20,8 @@ import com.marklogic.client.query.QueryManager;
 import com.marklogic.client.query.StringQueryDefinition;
 import com.marklogic.client.semantics.GraphManager;
 import com.marklogic.client.semantics.RDFMimeTypes;
+import com.marklogic.client.semantics.SPARQLBindings;
+import com.marklogic.client.semantics.SPARQLMimeTypes;
 import com.marklogic.client.semantics.SPARQLQueryDefinition;
 import com.marklogic.client.semantics.SPARQLQueryManager;
 import com.marklogic.client.util.EditableNamespaceContext;
@@ -77,7 +83,7 @@ public class ActRepository {
 		// add rdf triplet to the database
 		GraphManager graphManager = client.newGraphManager();
         StringHandle stringHandle = new StringHandle(metadata).withMimetype(RDFMimeTypes.RDFXML);
-        graphManager.merge("/acts/metadata", stringHandle);
+        graphManager.merge("acts/metadata", stringHandle);
 
 		client.release();
 	}
@@ -108,7 +114,7 @@ public class ActRepository {
 		SPARQLQueryManager sparqlQueryManager = client.newSPARQLQueryManager();
         String subject = "www.assembly.gov.rs/acts/" + actId;
         String predicate = "www.assembly.gov.rs/acts/status";
-        updateTriplet(sparqlQueryManager, "/acts/metadata", subject, predicate, status);
+        updateTriplet(sparqlQueryManager, "acts/metadata", subject, predicate, status);
 
 		client.release();
 		
@@ -158,7 +164,6 @@ public class ActRepository {
 		else if(target.getOperation() == Operation.INSERT) {
 			String xml = "";
 			Object targetObject = getTargetElement(target);
-			Paragraph p = (Paragraph) targetObject;
 			xml = toXML(targetObject);
 			builder.insertFragment("//*[@id='" + target.getTargetId() + "']", Position.valueOf(target.getPosition().toString()), xml);
 		}
@@ -247,6 +252,58 @@ public class ActRepository {
     
     }
     
+    public ArrayList<String> findByTerm(String pred, String obj) throws JAXBException {
+    	
+    	@SuppressWarnings("deprecation")
+		DatabaseClient client = DatabaseClientFactory.newClient(MarklogicProperties.HOST, MarklogicProperties.PORT, MarklogicProperties.DATABASE,
+				MarklogicProperties.USER, MarklogicProperties.PASS, DatabaseClientFactory.Authentication.DIGEST);
+    	
+    	// Create a SPARQL query manager to query RDF datasets
+    	SPARQLQueryManager sparqlQueryManager = client.newSPARQLQueryManager();
+    	
+    	// Initialize SPARQL query definition - retrieves all triples from RDF dataset 
+    	// obj must be inside "" because its literal type inside marklogic
+    	String query = "SELECT * FROM <acts/metadata> WHERE { ?s ?p \"" + obj + "\" }";
+      	
+    	// bind obj to 'o' in the query
+    	SPARQLQueryDefinition sparqlQuery = sparqlQueryManager.newQueryDefinition(query).withBinding("o", obj);
+    	
+    	// Initialize Jackson results handle
+    	JacksonHandle resultsHandle = new JacksonHandle();
+    	resultsHandle.setMimetype(SPARQLMimeTypes.SPARQL_JSON);
+    	
+    	// execute query
+    	resultsHandle = sparqlQueryManager.executeSelect(sparqlQuery, resultsHandle);
+
+    	// parse query result to list of actIds
+    	ArrayList<String> actURIs = handleResults(resultsHandle);
+    	
+    	// find all Acts that fit by ids
+    	ArrayList<String> acts = new ArrayList<String>();
+    	for(String uri : actURIs) {
+    		String[] parts = uri.split("/");
+    		String id = parts[2];
+    		Act act = findById(client, id);
+    		acts.add(toXML(act));
+    	}
+    	
+    	return acts;
+    	
+    }
+    
+    // convert resulting triplet to array of actId's (subjects in rdf triplet)
+    private static ArrayList<String> handleResults(JacksonHandle resultsHandle) {
+		JsonNode tuples = resultsHandle.get().path("results").path("bindings");
+		
+		ArrayList<String> actIds = new ArrayList<String>();
+		for ( JsonNode row : tuples ) {
+			String subject = row.path("s").path("value").asText();
+			actIds.add(subject);
+		}
+		return actIds;
+	}
+    
+    // find an act in the database by its id
     public Act findById(DatabaseClient client, String id) throws JAXBException {
     	
     	XMLDocumentManager docMgr = client.newXMLDocumentManager();

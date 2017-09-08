@@ -48,5 +48,8 @@ public class UserService {
     	return actRepository.findByText(text);
     }
     
+    public ArrayList<String> findByTerm(String pred, String obj) throws JAXBException {
+    	return actRepository.findByTerm(pred, obj);
+    }
     
 }
