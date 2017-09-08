@@ -1,5 +1,6 @@
 package app.service;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,6 +12,8 @@ import javax.xml.transform.TransformerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.itextpdf.text.DocumentException;
+
 import app.dto.LoginDTO;
 import app.jaxb_model.Act;
 import app.model.Alderman;
@@ -19,6 +22,7 @@ import app.model.User;
 import app.repository.ActRepository;
 import app.repository.AmendmentRepository;
 import app.repository.UserRepository;
+import app.util.PDFExtractor;
 import app.util.XHTMLExtractor;
 
 @Service
@@ -76,6 +80,22 @@ public class UserService {
     		xhtml.add(XHTMLExtractor.extract(act, "src/main/resources/xsl/amendment_to_xhtml.xsl"));
     	}
     	return xhtml;
+    }
+    
+    public void exportActsPDF() throws JAXBException, TransformerException, IOException, DocumentException {
+    	ArrayList<String> acts = actRepository.findAll();
+    	for(int i = 0; i < acts.size(); i++) {
+    		String xhtml = XHTMLExtractor.extract(acts.get(i), "src/main/resources/xsl/act_to_xhtml.xsl");
+    		PDFExtractor.extract(xhtml, "gen/act" + i + ".pdf");
+    	}
+    }
+    
+    public void exportAmendmentsPDF() throws JAXBException, TransformerException, IOException, DocumentException {
+    	ArrayList<String> amendments = amendmentRepository.findAll();
+    	for(int i = 0; i < amendments.size(); i++) {
+    		String xhtml = XHTMLExtractor.extract(amendments.get(i), "src/main/resources/xsl/amendment_to_xhtml.xsl");
+    		PDFExtractor.extract(xhtml, "gen/amendment" + i + ".pdf");
+    	}
     }
     
 }

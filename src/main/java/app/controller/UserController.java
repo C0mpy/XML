@@ -1,5 +1,6 @@
 package app.controller;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Map;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.itextpdf.text.DocumentException;
 
 import app.dto.LoginDTO;
 import app.dto.UserDTO;
@@ -78,7 +81,6 @@ public class  UserController {
             value = "/exportActsXHTML",
             method = RequestMethod.POST
     )
-    // method receives predicate and object for the search, exmpl (state="SCHELDUED")
     public ResponseEntity<?> exportXHTML() throws JAXBException, UnsupportedEncodingException, TransformerException  {
     	ArrayList<String> xhtml = userService.exportActsXHTML();
     	return ResponseEntity.status(HttpStatus.OK).body(xhtml);
@@ -88,10 +90,28 @@ public class  UserController {
             value = "/exportAmendmentsXHTML",
             method = RequestMethod.POST
     )
-    // method receives predicate and object for the search, exmpl (state="SCHELDUED")
     public ResponseEntity<?> exportAmendmentsXHTML() throws JAXBException, UnsupportedEncodingException, TransformerException  {
     	ArrayList<String> xhtml = userService.exportAmendmentsXHTML();
     	return ResponseEntity.status(HttpStatus.OK).body(xhtml);
     }
+    
+    @RequestMapping(
+            value = "/exportActsPDF",
+            method = RequestMethod.POST
+    )
+    public ResponseEntity<?> exportActsPDF() throws JAXBException, TransformerException, IOException, DocumentException  {
+    	userService.exportActsPDF();
+    	return ResponseEntity.status(HttpStatus.OK).body("Generated PDF");
+    }
+    
+    @RequestMapping(
+            value = "/exportAmendmentsPDF",
+            method = RequestMethod.POST
+    )
+    public ResponseEntity<?> exportAmendmentsPDF() throws JAXBException, TransformerException, IOException, DocumentException  {
+    	userService.exportAmendmentsPDF();
+    	return ResponseEntity.status(HttpStatus.OK).body("Generated PDF");
+    }
+    
 
 }
