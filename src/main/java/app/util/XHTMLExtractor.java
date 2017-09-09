@@ -19,9 +19,6 @@ import com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;
 public class XHTMLExtractor {
 	
 	public static String extract(String content, String XSLTFile) throws UnsupportedEncodingException, TransformerException {
-		
-		// Create transformation source
-		File xslt = new File(XSLTFile);
 
 		StreamSource transformSource = new StreamSource(new File(XSLTFile));
 				

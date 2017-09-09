@@ -62,7 +62,15 @@ public class AldermanService {
 		act.setSessionId(sessionId);
 		act.setStatus(Status.SCHEDULED);
 		
+		// save the act in the marklogic database
 		actRepository.save(act, sessionId);
+		
+		// bind the new act to its session in the mysql database
+		Session session = sessionRepository.findOne(Long.parseLong(sessionId));
+		session.getActs().add(act.getId());
+		
+		sessionRepository.save(session);
+		
 		return act.getId();
 		
 	}

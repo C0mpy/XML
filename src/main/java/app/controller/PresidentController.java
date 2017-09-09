@@ -24,7 +24,7 @@ public class PresidentController {
     private PresidentService presidentService;
 
 	@RequestMapping(
-			value = "/addSession",
+			value = "/session",
             method = RequestMethod.POST,
             consumes = "application/json",
             produces = "application/text"

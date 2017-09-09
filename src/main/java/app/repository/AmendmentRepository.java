@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import com.marklogic.client.DatabaseClient;
 import com.marklogic.client.DatabaseClientFactory;
-import com.marklogic.client.document.DocumentMetadataPatchBuilder;
 import com.marklogic.client.document.DocumentPage;
 import com.marklogic.client.document.DocumentPatchBuilder;
 import com.marklogic.client.document.DocumentRecord;

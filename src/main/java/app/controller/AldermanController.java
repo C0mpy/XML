@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.xml.sax.SAXException;
 
-import app.dto.RequestDTO;
 import app.model.Session;
 import app.service.AldermanService;
 
@@ -42,8 +40,8 @@ public class AldermanController {
     }
 	
 	@RequestMapping(
-            value = "/session/get/{sessionId}",
-            method = RequestMethod.POST,
+            value = "/session/{sessionId}",
+            method = RequestMethod.GET,
             produces = "application/json"
     )
 	public ResponseEntity<?> getSession(@PathVariable String sessionId) {
@@ -53,7 +51,7 @@ public class AldermanController {
 	}
 	
 	@RequestMapping(
-            value = "/session/{sessionId}/addAct",
+            value = "/session/{sessionId}/act",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_XML
     )
@@ -72,7 +70,7 @@ public class AldermanController {
 	}
 	
 	@RequestMapping(
-            value = "/act/{actId}/addAmendment",
+            value = "/act/{actId}/amendment",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_XML
     )

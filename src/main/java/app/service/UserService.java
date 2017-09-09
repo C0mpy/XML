@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import com.itextpdf.text.DocumentException;
 
 import app.dto.LoginDTO;
-import app.jaxb_model.Act;
 import app.model.Alderman;
 import app.model.President;
 import app.model.User;

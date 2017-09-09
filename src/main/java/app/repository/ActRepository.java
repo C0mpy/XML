@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.marklogic.client.DatabaseClient;
 import com.marklogic.client.DatabaseClientFactory;
 import com.marklogic.client.document.XMLDocumentManager;
-import com.marklogic.client.impl.QueryManagerImpl;
-import com.marklogic.client.impl.SPARQLBindingsImpl;
 import com.marklogic.client.document.DocumentPage;
 import com.marklogic.client.document.DocumentPatchBuilder;
 import com.marklogic.client.document.DocumentPatchBuilder.Position;
@@ -21,20 +19,24 @@ import com.marklogic.client.io.marker.DocumentPatchHandle;
 import com.marklogic.client.query.MatchDocumentSummary;
 import com.marklogic.client.query.QueryManager;
 import com.marklogic.client.query.StringQueryDefinition;
-import com.marklogic.client.query.StructuredQueryBuilder;
-import com.marklogic.client.query.StructuredQueryDefinition;
 import com.marklogic.client.semantics.GraphManager;
 import com.marklogic.client.semantics.RDFMimeTypes;
-import com.marklogic.client.semantics.SPARQLBindings;
 import com.marklogic.client.semantics.SPARQLMimeTypes;
 import com.marklogic.client.semantics.SPARQLQueryDefinition;
 import com.marklogic.client.semantics.SPARQLQueryManager;
 import com.marklogic.client.util.EditableNamespaceContext;
 
 import app.jaxb_model.Act;
-import app.jaxb_model.Amendment;
+import app.jaxb_model.Article;
+import app.jaxb_model.Chapter;
+import app.jaxb_model.Clause;
+import app.jaxb_model.Indent;
 import app.jaxb_model.Operation;
 import app.jaxb_model.Paragraph;
+import app.jaxb_model.Part;
+import app.jaxb_model.Section;
+import app.jaxb_model.Subclause;
+import app.jaxb_model.Subsection;
 import app.jaxb_model.Target;
 import app.util.MarklogicProperties;
 import app.util.MetadataExtractor;
@@ -43,8 +45,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.regex.MatchResult;
 
 import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBContext;
@@ -183,31 +183,49 @@ public class ActRepository {
 	// fetch the correct attribute from the target object
 	private Object getTargetElement(Target target) {
 		if(target.getType().equals("PART")) {
-			return target.getPart();
+			Part p = target.getPart();
+			p.generateId();
+			return p;
 		}
 		else if(target.getType().equals("CHAPTER")) {
-			return target.getChapter();
+			Chapter c = target.getChapter();
+			c.generateId();
+			return c;
 		}
 		else if(target.getType().equals("SECTION")) {
-			return target.getSection();
+			Section s = target.getSection();
+			s.generateId();
+			return s;
 		}
 		else if(target.getType().equals("SUBSECTION")) {
-			return target.getSubsection();
+			Subsection s = target.getSubsection();
+			s.generateId();
+			return s;
 		}
 		else if(target.getType().equals("ARTICLE")) {
-			return target.getArticle();
+			Article a = target.getArticle();
+			a.generateId();
+			return a;
 		}
 		else if(target.getType().toString().equals("PARAGRAPH")) {
-			return target.getParagraph();
+			Paragraph p = target.getParagraph();
+			p.generateId();
+			return p;
 		}
 		else if(target.getType().equals("CLAUSE")) {
-			return target.getClause();
+			Clause c = target.getClause();
+			c.generateId();
+			return c;
 		}
 		else if(target.getType().equals("SUBCLAUSE")) {
-			return target.getSubclause();
+			Subclause s = target.getSubclause();
+			s.generateId();
+			return s;
 		}
 		else if(target.getType().equals("INDENT")) {
-			return target.getIndent();
+			Indent i = target.getIndent();
+			i.generateId();
+			return i;
 		}
 		else {
 			return target.getContent();
@@ -271,7 +289,7 @@ public class ActRepository {
     	String query = "SELECT * FROM <acts/metadata> WHERE { ?s ?p \"" + obj + "\" }";
       	
     	// bind obj to 'o' in the query
-    	SPARQLQueryDefinition sparqlQuery = sparqlQueryManager.newQueryDefinition(query).withBinding("o", obj);
+    	SPARQLQueryDefinition sparqlQuery = sparqlQueryManager.newQueryDefinition(query);
     	
     	// Initialize Jackson results handle
     	JacksonHandle resultsHandle = new JacksonHandle();
